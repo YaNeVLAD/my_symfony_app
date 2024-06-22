@@ -1,0 +1,16 @@
+{% extends "base/index.html.twig" %}
+
+{% block header %}
+    {% embed "base/header.html.twig" %}
+        {% block location %}
+            Админ / Обновление заказа
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    {% include "store/order/update/update_form.html.twig" with {categories: categories} %}
+    <nav class="nav">
+        <a class="nav__link" href="{{path('show_order', {orderId: order.getId})}}">Назад</a>
+    </nav>        
+{% endblock %}

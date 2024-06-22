@@ -1,0 +1,39 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		{% block head %}
+			<link rel="preconnect" href="https://fonts.googleapis.com">
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+			<link href="https://fonts.googleapis.com/css2?family=Lora&family=Oxygen:wght@400&display=swap" rel="stylesheet">
+			<link rel="stylesheet" href="/css/styles.css"/>
+			<title>
+				{% block title %}
+					Pizza Hub
+				{% endblock %}
+			</title>
+		{% endblock %}
+	</head>
+
+	<body>
+		<header id="header">
+			{% block header %}
+				{% embed 'base/header.html.twig' %}{% endembed %}
+			{% endblock %}
+		</header>
+		<main>
+			<div id="content">
+				{% block content %}
+					<h2>Welcome to my Symfony Project!</h2>
+				{% endblock %}
+			</div>
+		</main>
+		<footer id="footer">
+			{% block footer %}
+				{% include "base/footer.html.twig" %}
+			{% endblock %}
+		</footer>
+		{% block scripts %}
+		
+		{% endblock %}
+	</body>
+
+</html>

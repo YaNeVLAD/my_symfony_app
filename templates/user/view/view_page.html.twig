@@ -1,0 +1,22 @@
+{% extends "base/index.html.twig" %}
+
+{% block title %}
+	User Profile
+{% endblock %}
+
+{% block contentTitle %}
+	User Profile
+{% endblock %}
+
+{% block content %}
+	<div class="view">
+		{% include "user/view/user_preview.html.twig" %}
+	</div>
+	<nav class="footer__nav_view">
+		<a href="{{path('update_user_form', {userId: user.getId})}}" class="footer__update-button">Update User</a>
+		<button onclick="return confirm('Do you want to delete profile?');" class="footer__delete-block" style="border: 0;">
+			<a href="{{path('delete_user', {userId: user.getId})}}" class="delete-button">Delete User</a>
+		</button>
+		<a href="{{path('list_user')}}" class="footer__update-button">Show All Users</a>
+	</nav>
+{% endblock %}

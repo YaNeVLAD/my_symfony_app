@@ -1,0 +1,46 @@
+<form action="{{path('update_order', {orderId: order.getId})}}" method="post" enctype="multipart/form-data">
+	<label for="categorie">Category:</label>
+
+	<select id="categorie" name="categorie" required>
+		{% for key, name in categories %}
+			{% if currCategory == key %}
+				<option value="{{key}}" selected>{{name}}</option>
+			{% else %}
+				<option value="{{key}}">{{name}}</option>
+			{% endif %}
+		{% endfor %}
+	</select>
+	<br>
+
+	<label for="name">Name:</label>
+	<input type="text" id="name" name="name" required value="{{order.getName}}">
+	<br>
+
+	<label for="description">Description:</label>
+	<textarea id="description" name="description" value="{{order.getDescription}}"></textarea>
+	<br>
+
+	<label for="image_path">Image Path:</label>
+	<input type="file" id="image_path" name="image_path" accept=".png, .jpg, .jpeg, .gif">
+	<br>
+
+	<label for="price">Price:</label>
+	<input type="number" id="price" name="price" required value="{{order.getPrice}}">
+	<br>
+
+	<label>Featured:</label>
+	{% if order.getFeatured != 0 %}
+		<input type="radio" id="featured_yes" name="featured" value="1" required checked>
+		<label for="featured_yes">1</label>
+		<input type="radio" id="featured_no" name="featured" value="0" required>
+		<label for="featured_no">0</label>
+	{% else %}
+		<input type="radio" id="featured_yes" name="featured" value="1" required>
+		<label for="featured_yes">1</label>
+		<input type="radio" id="featured_no" name="featured" value="0" required checked>
+		<label for="featured_no">0</label>
+	{% endif %}
+	<br>
+
+	<button type="submit">Submit</button>
+</form>

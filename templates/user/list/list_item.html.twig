@@ -1,0 +1,23 @@
+<div class="preview">
+	<div style="" class="preview__image-block">
+		{% if user.getAvatarPath == null %}
+			<img src="/uploads/user_images/base_image.png" class="preview__image">
+		{% else %}
+			<img src="/uploads/user_images/{{user.getAvatarPath}}" class="preview__image">
+		{% endif %}
+	</div>
+	<div class="preview__info">
+		<span class="preview__first-name">First Name:
+			{{user.getFirstName}}</span>
+		<span class="preview__last-name">Last Name:
+			{{user.getLastName}}</span>
+		<span class="preview__email">Email:
+			{{user.getEmail}}</span>
+	</div>
+	<div class="preview__buttons">
+		<a href="{{ path('show_user', {userId: user.getId}) }}" class="preview__view-button">View</a>
+		<button onclick="return confirm('Do you want to delete profile?');" class="footer__delete-block" style="border: 0;">
+			<a href="{{path('delete_user', {userId: user.getId})}}" class="delete-button">Delete</a>
+		</button>
+	</div>
+</div>

@@ -1,0 +1,61 @@
+{% extends "base/index.html.twig" %}
+
+{% set count = 0 %}
+
+{% block header %}
+    {% embed "base/header.html.twig" %}
+        {% block location %}
+            {% for key, name in categories %}
+                {% if category == key %}
+                    Магазин / {{name}}
+                {% endif %}
+            {% endfor %}
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    <div class="store-top">
+        <nav class="store-nav">
+           <ul class="store-nav__list">
+                {% for key, name in categories %}
+                    <li class="store-nav__item  {% if category == key %}selected{% endif %}">
+                        <a href="{{ path('list_order', {category: key})}}" class="store-nav__link">
+                            {{name}}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </nav>
+        <div class="slider-block">
+            <button class="prev-btn"></button>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    {% for order in orders %}   
+                        {% if order.getFeatured != 0 %}
+                            {% include "store/order/list/list_featured_item.html.twig" %}
+                            {% set count = count + 1 %}
+                        {% endif %} 
+                    {% endfor %}
+                    {% if count == 0 %}
+                        {% include "store/order/list/list_missing_item.html.twig" %}  
+                    {% endif %}
+                </div>
+            </div>
+            <button class="next-btn"></button>
+        </div>
+    </div>
+    
+    <div class="order-list">
+        {% for order in orders %}   
+            {% if order.getFeatured == 0 %}
+                {% include "store/order/list/list_item.html.twig" %}
+            {% endif %} 
+        {% endfor %}
+        {% include "store/order/list/list_add_item.html.twig" %}  
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="/scripts/slider.js"></script>
+{% endblock %}

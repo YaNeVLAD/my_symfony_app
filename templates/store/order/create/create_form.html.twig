@@ -1,0 +1,39 @@
+<form action="{{path('create_order')}}" method="post" enctype="multipart/form-data">
+	<label for="categorie">Category:</label>
+
+	<select id="categorie" name="categorie" required>
+		{% for key, category in categories %}
+			{% if currCategory == key %}
+				<option value="{{key}}" selected>{{category}}</option>
+			{% else %}
+				<option value="{{key}}">{{category}}</option>
+			{% endif %}
+		{% endfor %}
+	</select>
+	<br>
+
+	<label for="name">Name:</label>
+	<input type="text" id="name" name="name" required>
+	<br>
+
+	<label for="description">Description:</label>
+	<textarea id="description" name="description"></textarea>
+	<br>
+
+	<label for="image_path">Image Path:</label>
+	<input type="file" id="image_path" name="image_path" accept=".png, .jpg, .jpeg, .gif">
+	<br>
+
+	<label for="price">Price:</label>
+	<input type="number" id="price" name="price" required>
+	<br>
+
+	<label>Featured:</label>
+	<input type="radio" id="featured_yes" name="featured" value="1" required>
+	<label for="featured_yes">1</label>
+	<input type="radio" id="featured_no" name="featured" value="0" required>
+	<label for="featured_no">0</label>
+	<br>
+
+	<button type="submit">Submit</button>
+</form>

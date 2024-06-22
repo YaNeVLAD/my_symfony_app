@@ -1,0 +1,65 @@
+{% extends "base/index.html.twig" %}
+
+{% set OverAllSum = 0 %}
+{% set Sum = 0 %}
+
+{% block header %}
+	{% embed "base/header.html.twig" %}
+		{% block location %}
+			Магазин / Корзина
+		{% endblock %}
+	{% endembed %}
+{% endblock %}
+
+{% block content %}
+	<div class="content__title-block">
+		<h1 class="content__title">
+			{% if basketItems %}
+				Товаров в корзине: {{basketItems|length}}
+			{% else %}
+				В корзине пока нет товаров
+			{% endif %}
+		</h1>
+	</div>
+	{% if basketItems|length != 0 %}
+		<div class="cart">
+			<div class="cart__header">
+				<div class="cart__header-item">Товар</div>
+				<div class="cart__header-item">Цена</div>
+				<div class="cart__header-item">Количество</div>
+				<div class="cart__header-item">Подытог</div>
+				<div class="cart__header-item last"></div>
+			</div>
+			{% for basketItem in basketItems %}
+				{% include "store/basket/basket_item.html.twig" %}
+                {% set Sum = Sum + basketItem.order.getPrice %}
+				{% set OverAllSum = OverAllSum + basketItem.order.getPrice * basketItem.getItemCount %}
+			{% endfor %}
+		</div>
+        <div class="payment-block">
+            <div class="payment">
+                <div class="payment__content">
+                    <h2 class="payment__title">Сумма заказов</h2>
+                    <div class="payment__block">
+                        <span class="payment__block-title">Подытог</span>
+                        <span class="payment__sum">{{Sum}} ₽</span>
+                    </div>
+                    <div class="payment__block">
+                        <span class="payment__block-title">Итог</span>
+                        <span class="payment__sum">{{OverAllSum}} ₽</span>
+                    </div>
+                    <form action="{{path('pay_for_order_form')}}" id="form" data-variable="{{OverAllSum}}">
+                        <label class="payment__label">Адрес доставки</label>
+                        <input type="text" class="payment__adress" placeholder="Введите адрес доставки" required>
+                        <label class="payment__label bottom">г. Город, ул. Улица, Дом</label>
+                        <button class="payment__pay-button" type="submit" id="submit">Оформить заказ</button>  
+                    </form>
+                </div>
+            </div>
+        </div>
+	{% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="/scripts/basket.js"></script>
+{% endblock %}

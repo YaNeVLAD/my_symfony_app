@@ -1,0 +1,14 @@
+<div class="view-form">
+    {% if order.getImagePath == null %}
+        <img class="order__image" src="/uploads/order_images/base_image.png">
+    {% else %}
+        <img class="order__image" src="/uploads/order_images/{{order.getImagePath}}">
+    {% endif %}
+    <div>
+        <span class="view-form__span">Категория: {{order.getCategorie}}</span>
+        <span class="view-form__span">Название: {{order.getName}}</span>
+        <span class="view-form__span">Состав: {{order.getDescription}}</span>
+        <span class="view-form__span">Цена: {{order.getPrice}} ₽</span>
+        <span class="view-form__span">Акция: {{order.getFeatured}}</span>
+    </div>
+</div>

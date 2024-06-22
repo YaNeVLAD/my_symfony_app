@@ -1,0 +1,16 @@
+{% extends "base/index.html.twig" %}
+
+{% block title %}
+	Registration Form
+{% endblock %}
+
+{% block contentTitle %}
+	Registration Form
+{% endblock %}
+
+{% block content %}
+	<nav>
+		<a class="footer__update-button" href="{{path('list_user')}}">Список пользователей</a>
+	</nav>
+	{% include "user/register/register_form.html.twig" %}
+{% endblock %}

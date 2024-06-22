@@ -1,0 +1,37 @@
+<div class="user">
+	<div class="user__field-block">
+		<span class="user__field-title">First Name:</span>
+		<span class="user__field-value">{{user.getFirstName}}</span>
+	</div>
+	<div class="user__field-block">
+		<span class="user__field-title">Last Name:</span>
+		<span class="user__field-value">{{user.getLastName}}</span>
+	</div>
+	<div class="user__field-block">
+		<span class="user__field-title">Middle Name:</span>
+		<span class="user__field-value">{{user.getMiddleName}}</span>
+	</div>
+	<div class="user__field-block">
+		<span class="user__field-title">Gender:</span>
+		<span class="user__field-value">{{user.getGender}}</span>
+	</div>
+	<div class="user__field-block">
+		<span class="user__field-title">Birth Date:</span>
+		<span class="user__field-value">{{user.getBirthDate|date('d.m.Y')}}</span>
+	</div>
+	<div class="user__field-block">
+		<span class="user__field-title">Email:</span>
+		<span class="user__field-value">{{user.getEmail}}</span>
+	</div>
+	<div class="user__field-block">
+		<span class="user__field-title">Phone:</span>
+		<span class="user__field-value">{{user.getPhone}}</span>
+	</div>
+	<div class="view__image-block">
+		{% if user.getAvatarPath == null %}
+			<img src="/uploads/user_images/base_image.png" alt="Uploaded Image" class="view__image">
+		{% else %}
+			<img src="/uploads/user_images/{{user.getAvatarPath}}" alt="Uploaded Image" class="view__image">
+		{% endif %}
+	</div>
+</div>

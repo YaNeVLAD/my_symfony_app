@@ -1,0 +1,18 @@
+{% extends "custom_error/base.html.twig" %}
+
+{% block contentTitle %}
+	Error
+{% endblock %}
+
+{% block errorType %}
+	{{errorTitle}}
+{% endblock %}
+
+
+{% block error %}
+	<div class="error-block">
+		<p class="error-block__text">
+			{{errorText}}
+		</p>
+	</div>
+{% endblock %}

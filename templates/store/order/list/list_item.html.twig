@@ -1,0 +1,14 @@
+<div class="order">
+    <a href="{{path('show_order', {orderId: order.getId})}}">
+        {% if order.getImagePath == null %}
+            <img class="order__image" src="/uploads/order_images/base_image.png">
+        {% else %}
+            <img class="order__image" src="/uploads/order_images/{{order.getImagePath}}">
+        {% endif %}
+    </a>
+        <div class="order__text">
+            <span class="order__name">{{order.getName}}</span>
+            <span class="order__price">{{order.getPrice}} ₽</span>
+        </div>
+    <a href="{{path('add_order_to_basket', {orderId: order.getId})}}" class="order__make">Заказать</a>
+</div>

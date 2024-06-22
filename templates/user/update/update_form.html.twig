@@ -1,0 +1,44 @@
+<form action="{{path('update_user', {userId: user.getId})}}" method="post" enctype="multipart/form-data" class="update-form">
+	<div class="update-form__input">
+		<label class="update-form__label" for="first_name">New First Name:</label>
+		<input class="update-form__data" name="first_name" id="first_name" type="text" required value="{{user.getFirstName}}">
+	</div>
+	<div class="update-form__input">
+		<label class="update-form__label" for="last_name">New Last Name:</label>
+		<input class="update-form__data" name="last_name" id="last_name" type="text" required value="{{user.getLastName}}">
+	</div>
+	<div class="update-form__input">
+		<label class="update-form__label" for="middle_name">New Middle Name:</label>
+		<input class="update-form__data" name="middle_name" id="middle_name" type="text" value="{{user.getMiddleName}}">
+	</div>
+	<div class="update-form__input">
+		<label class="update-form__label" for="gender">New Gender:</label>
+		<input class="update-form__data" name="gender" id="gender" type="text" required value="{{user.getGender}}">
+	</div>
+	<div class="update-form__input">
+		<label class="update-form__label" for="birth_date">New Birth Date:</label>
+		<input class="update-form__data" name="birth_date" id="birth_date" type="date" required value="{{user.getBirthDate|date('Y-m-d')}}">
+	</div>
+	<div class="update-form__input">
+		<label class="update-form__label" for="email">New Email:</label>
+		<input class="update-form__data" name="email" id="email" type="email" required value="{{user.getEmail}}">
+	</div>
+	<div class="update-form__input">
+		<label class="update-form__label" for="phone">New Phone:</label>
+		<input class="update-form__data" name="phone" id="phone" type="tel" value="{{user.getPhone}}">
+	</div>
+	<div class="update-form__input_image">
+		<label for="avatar_path" class="update-form__image-label">Upload New Avatar</label>
+		{% if user.getAvatarPath == null %}
+			<img src="/uploads/user_images/base_image.png" alt="Uploaded Image" class="update-form__image">
+		{% else %}
+			<img src="/uploads/user_images/{{user.getAvatarPath}}" alt="Uploaded Image" class="update-form__image">
+		{% endif %}
+		<input name="avatar_path" id="avatar_path" type="file" style="display: none;">
+	</div>
+
+	<nav class="update-form__nav">
+		<button type="submit" class="update-form__submit-button">Submit</button>
+		<a href="{{path('show_user', {userId: user.getId})}}" class="delete-button">Cancel</a>
+	</nav>
+</form>

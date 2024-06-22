@@ -1,0 +1,18 @@
+<div class="header__top">
+	<a href="{{path('list_order', {category: 'pizza'})}}"><div class="header__title"></div></a>
+	<a href="{{path('register_user_form')}}"><img class="header__avatar" src="/uploads/user_images/base_image.png"></a>
+	<a href="{{path('basket_order_form')}}"><img class="header__basket" src="/uploads/page_images/header_basket_icon.svg"></a>
+</div>
+<div class="header__bottom">
+	<div class="header__location">
+		<span class="header__location-span">
+			{% block location %}
+				Ваше местоположение на сайте
+			{% endblock %}
+		</span>
+	</div>
+	<form class="header__form">
+		<input type="text" class="header__search" id="search" name="search" placeholder="Поиск">
+		<button type="submit" class="header__search-icon"></button>
+	</form>
+</div>

@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		{% block head %}
+			<link rel="stylesheet" href="/css/styles.css"/>
+			<title>
+				{% block title %}
+					ERROR
+				{% endblock %}
+			</title>
+		{% endblock %}
+	</head>
+
+	<body>
+        <div class="content__title-block">
+            <h1 class="content__title">
+                {% block errorType %}
+                {% endblock %}
+            </h1>
+        </div>
+        <div id="error">
+            {% block error %}
+            {% endblock %}
+            <a class="error__return" href="{{path('list_order', {category: 'pizza'})}}">
+                Return To Home Page
+            </a>
+        </div>
+    </body>
+
+</html>

@@ -1,0 +1,37 @@
+<form action="{{path('register_user')}}" enctype="multipart/form-data" method="post" class="register-form">
+	<div class="register-form__input">
+		<label for="first_name" class="register-form__input-label">First Name:</label>
+		<input name="first_name" id="first_name" type="text" required class="register-form__input-data" placeholder="Your first name">
+	</div>
+	<div class="register-form__input">
+		<label for="last_name" class="register-form__input-label">Last Name:</label>
+		<input name="last_name" id="last_name" type="text" required class="register-form__input-data" placeholder="Your last name">
+	</div>
+	<div class="register-form__input">
+		<label for="middle_name" class="register-form__input-label">Middle Name:</label>
+		<input name="middle_name" id="middle_name" type="text" class="register-form__input-data" placeholder="Your middle name">
+	</div>
+	<div class="register-form__input">
+		<label for="gender" class="register-form__input-label">Gender:</label>
+		<input name="gender" id="gender" type="text" required class="register-form__input-data" placeholder="Your gender">
+	</div>
+	<div class="register-form__input">
+		<label for="birth_date" class="register-form__input-label">Birth Date:</label>
+		<input name="birth_date" id="birth_date" type="date" required class="register-form__input-data">
+	</div>
+	<div class="register-form__input">
+		<label for="email" class="register-form__input-label">Email Adress:</label>
+		<input name="email" id="email" type="email" required class="register-form__input-data" placeholder="Your email">
+	</div>
+	<div class="register-form__input" class="register-form__input-label">
+		<label for="phone" class="register-form__input-label">Phone Number:</label>
+		<input name="phone" id="phone" type="tel" class="register-form__input-data" placeholder="Your phone">
+	</div>
+	<div class="register-form__input_image">
+		<button type="button" class="register-form__image-label">
+			<label for="avatar_path">Upload Avatar</label>
+		</button>
+		<input name="avatar_path" id="avatar_path" type="file" style="display: none;">
+	</div>
+	<button type="submit" class="register-form__submit-button">Submit</button>
+</form>

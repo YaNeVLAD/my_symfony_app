@@ -1,0 +1,160 @@
+index:
+    path: /
+    controller: App\Controller\StoreFrontController::index
+    methods: GET
+#
+# USER ROUTES
+#
+error_user:
+    path: /user/error
+    controller: App\Controller\StoreFrontController::errorPage
+    methods: GET
+
+show_user:
+    path: /user/profile/{userId}
+    controller: App\Controller\UserController::viewUser
+    methods: GET
+    requirements: 
+        userId: '\d+' 
+
+register_user_form:
+    path: /user/register
+    controller: App\Controller\UserController::showRegisterForm
+    methods: GET
+
+register_user:
+    path: /user/api/register
+    controller: App\Controller\UserController::registerUser
+    methods: POST
+
+list_user:
+    path: /user/list
+    controller: App\Controller\UserController::viewAllUsers
+    methods: GET
+
+delete_user:
+    path: /user/api/delete/{userId}
+    controller: App\Controller\UserController::removeUser
+    methods: GET
+    requirements: 
+        userId: '\d+'
+
+update_user_form:
+    path: /user/update/{userId}
+    controller: App\Controller\UserController::showUpdateForm
+    methods: GET
+    requirements: 
+        userId: '\d+'
+    
+update_user:
+    path: /user/api/update/{userId}
+    controller: App\Controller\UserController::updateUser
+    methods: POST
+    requirements: 
+        userId: '\d+'
+
+login_user_page:
+    path: /user/login
+    controller: App\Controller\UserController
+    methods: GET
+
+login_user:
+    path: /user/api/login/{?}
+    controller: App\Controller\UserController
+    methods: POST
+    requirements: 
+#
+# STORE ROUTES
+#
+error_store:
+    path: /store/error
+    controller: App\Controller\StoreFrontController::errorPage
+    methods: GET
+
+show_order: 
+    path: /store/order/{orderId}
+    controller: App\Controller\StoreFrontController::showOrder
+    methods: GET
+    requirements: 
+        orderId: '\d+' 
+
+list_order:
+    path: /store/list/{category}
+    controller: App\Controller\StoreFrontController::listByCategory
+    methods: GET
+
+basket_order_form:
+    path: /store/basket
+    controller: App\Controller\StoreFrontController::showBasket
+    methods: GET
+
+add_order_to_basket:
+    path: /store/basket/api/add/{orderId}
+    controller: App\Controller\StoreFrontController::addToBasket
+    methods: GET
+    requirements: 
+        orderId: '\d+'
+
+increase_basket_count:
+    path: /store/basket/api/increase/{orderId}
+    controller: App\Controller\StoreFrontController::increaseBasketItemCounter
+    methods: GET
+    requirements: 
+        orderId: '\d+'
+
+decrease_basket_count:
+    path: /store/basket/api/decrease/{orderId}
+    controller: App\Controller\StoreFrontController::decreaseBasketItemCounter
+    methods: GET
+    requirements: 
+        orderId: '\d+'
+
+remove_from_basket:
+    path: /store/basket/api/remove/{itemId}
+    controller: App\Controller\StoreFrontController::removeFromBasket
+    methods: GET
+    requirements:
+        orderId: '\d+'
+
+pay_for_order:
+    path: /store/payment
+    controller: App\Controller\StoreFrontController
+    methods: POST
+
+pay_for_order_form:
+    path: /store/api/payment
+    controller: App\Controller\StoreFrontController::showPaymentForm
+    methods: GET
+#
+# ADMIN ROUTES
+#
+delete_order:
+    path: /store/order/api/delete/{orderId}
+    controller: App\Controller\OrderController::deleteOrder
+    methods: GET
+    requirements: 
+        orderId: '\d+'
+
+create_order_form:
+    path: /store/order/create/{currCategory}
+    controller: App\Controller\OrderController::showCreateForm
+    methods: GET
+
+create_order:
+    path: /store/order/api/create
+    controller: App\Controller\OrderController::createOrder
+    methods: POST
+
+update_order_form:
+    path: /store/order/update/{orderId}
+    controller: App\Controller\OrderController::showUpdateForm
+    methods: GET
+    requirements: 
+        orderId: '\d+'
+
+update_order:
+    path: /store/order/api/update/{orderId}
+    controller: App\Controller\OrderController::updateOrder
+    methods: POST 
+    requirements: 
+        orderId: '\d+'

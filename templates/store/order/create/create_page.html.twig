@@ -1,0 +1,16 @@
+{% extends "base/index.html.twig" %}
+
+{% block header %}
+	{% embed "base/header.html.twig" %}
+		{% block location %}
+			Админ / Создание заказа
+		{% endblock %}
+	{% endembed %}
+{% endblock %}
+
+{% block content %}
+	{% include "store/order/create/create_form.html.twig" with {'categories': categories} %}
+	<nav class="nav">
+		<a class="nav__link" href="{{path('list_order', {category: currCategory})}}">Назад</a>
+	</nav>
+{% endblock %}
