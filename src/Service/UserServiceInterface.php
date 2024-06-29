@@ -9,6 +9,12 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface UserServiceInterface
 {
+    public const COMPARE = 1;
+
+    public const AUTHORIZATION = 2;
+
+    public const ROLE = 3;
+
     public function createUser(UserData $userData, ?UploadedFile $avatar): int;
 
     public function getUser(int $userId): UserData;
@@ -20,4 +26,6 @@ interface UserServiceInterface
     public function editUser(UserData $userData, ?UploadedFile $avatar): int;
 
     public function deleteUser(int $userId): void;
+
+    public function authorize(int $method, ?string $email, ?int $userId): ?bool;
 }

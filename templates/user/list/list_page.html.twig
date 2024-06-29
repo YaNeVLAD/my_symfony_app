@@ -9,9 +9,6 @@
 {% endblock %}
 
 {% block content %}
-	<nav>
-		<a class="footer__update-button" href="{{path('register_user_form')}}">Создать пользователя</a>
-	</nav>
 	<div class="users">
 		{% for user in users_list %}
 			{% include "user/list/list_item.html.twig" %}

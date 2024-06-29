@@ -27,6 +27,7 @@
 		<label class="update-form__label" for="phone">New Phone:</label>
 		<input class="update-form__data" name="phone" id="phone" type="tel" value="{{user.getPhone}}">
 	</div>
+		<input class="update-form__data" name="password" id="password" type="hidden" value="{{user.getPassword}}">
 	<div class="update-form__input_image">
 		<label for="avatar_path" class="update-form__image-label">Upload New Avatar</label>
 		{% if user.getAvatarPath == null %}

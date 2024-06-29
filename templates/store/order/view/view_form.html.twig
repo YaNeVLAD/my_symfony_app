@@ -5,7 +5,11 @@
         <img class="order__image" src="/uploads/order_images/{{order.getImagePath}}">
     {% endif %}
     <div>
-        <span class="view-form__span">Категория: {{order.getCategorie}}</span>
+        {% for key, name in categories %}
+			{% if order.getCategorie == key %}
+                <span class="view-form__span">Категория: {{name}}</span>
+			{% endif %}
+		{% endfor %}
         <span class="view-form__span">Название: {{order.getName}}</span>
         <span class="view-form__span">Состав: {{order.getDescription}}</span>
         <span class="view-form__span">Цена: {{order.getPrice}} ₽</span>

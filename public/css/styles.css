@@ -96,6 +96,12 @@ body {
     margin-left: -5px;
 }
 
+.header__logout {
+    margin-left: 20px;
+    width: 30px;
+    height: 30px;
+}
+
 .delete-button {
     display: inline-block;
     padding: 15px;
@@ -800,7 +806,7 @@ body {
     line-height: 50px;
     color: rgb(100, 100, 100);
     text-decoration: none;
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(244, 244, 244);
     border: 0;
 }
 

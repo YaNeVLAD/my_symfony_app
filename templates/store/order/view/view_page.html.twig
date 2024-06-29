@@ -11,8 +11,10 @@
 {% block content %}
     {% include "store/order/view/view_form.html.twig" %}
     <nav class="nav">
-        <a class="nav__link" href="{{path('update_order_form', {orderId: order.getId})}}">Обновить информацию</a>
-        <a class="nav__link" href="{{path('delete_order', {orderId: order.getId})}}">Удалить заказ</a>
+        {% if role == roleAdmin %}
+            <a class="nav__link" href="{{path('update_order_form', {orderId: order.getId})}}">Обновить информацию</a>
+            <a class="nav__link" href="{{path('delete_order', {orderId: order.getId})}}">Удалить заказ</a>
+        {% endif %}
         <a class="nav__link" href="{{path('list_order', {category: order.getCategorie})}}">Вернуться к товарам</a>
     </nav>
 {% endblock %}

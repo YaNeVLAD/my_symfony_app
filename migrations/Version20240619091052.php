@@ -25,8 +25,8 @@ final class Version20240619091052 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_2246507B550872C ON basket');
         $this->addSql('DROP INDEX IDX_2246507B96133AFD ON basket');
         $this->addSql('ALTER TABLE basket ADD user_id INT UNSIGNED NOT NULL, ADD item_id INT UNSIGNED NOT NULL, DROP user_email, DROP item_name');
-        $this->addSql('ALTER TABLE basket ADD CONSTRAINT FK_2246507BA76ED395 FOREIGN KEY (user_id) REFERENCES user (user_id)');
-        $this->addSql('ALTER TABLE basket ADD CONSTRAINT FK_2246507B126F525E FOREIGN KEY (item_id) REFERENCES order_copy (order_id)');
+        $this->addSql('ALTER TABLE basket ADD CONSTRAINT FK_2246507BA76ED395 FOREIGN KEY (user_id) REFERENCES user (user_id) ON UPDATE RESTRICT ON DELETE RESTRICT');
+        $this->addSql('ALTER TABLE basket ADD CONSTRAINT FK_2246507B126F525E FOREIGN KEY (item_id) REFERENCES order_copy (order_id) ON UPDATE RESTRICT ON DELETE RESTRICT');
         $this->addSql('CREATE INDEX IDX_2246507BA76ED395 ON basket (user_id)');
         $this->addSql('CREATE INDEX IDX_2246507B126F525E ON basket (item_id)');
     }

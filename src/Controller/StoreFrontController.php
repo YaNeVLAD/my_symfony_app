@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 //СУЩНОСТЬ Order изменить на сущность Product???
@@ -13,6 +14,21 @@ declare(strict_types=1);
 //Создание сущностей Order(null, User $user, Order $order, string $adress, DateTimeImmutable date())
 //Сделать возможность смотреть и удалять эти заказы с отдельных страничек
 
+//Авторизация
+//Разделить права пользователя и админа
+//Настроить security.yaml
+//Сделать так, что пользователь может удалить только сам себя
+//Админ может удалять всех
+//Только админ может просматривать список пользователей
+//Только админ видит и может перейти на страницы CRUD для товаров
+//Проверка прав на смену аватарки
+
+//Настроить маппинг для сущностей
+//Отформатировать sql запросы в миграциях
+//Каждая миграция совершает 1 действие
+/** */
+
+
 namespace App\Controller;
 
 use App\Constants\AppConstants;
@@ -22,8 +38,8 @@ use App\Service\OrderServiceInterface;
 use App\Service\BasketServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Security;
 
 class StoreFrontController extends AbstractController
 {
@@ -45,18 +61,16 @@ class StoreFrontController extends AbstractController
     }
 
     //Публичные методы
-    public function index(SessionInterface $session): Response
+    public function index(): Response
     {
-        $session->set(AppConstants::USER_SESSION_NAME, AppConstants::UNAUTHORIZED_ID);
-
         return $this->redirectToRoute('list_order', [
             'category' => AppConstants::BASE_CATEGORY,
         ]);
     }
 
-    public function showPaymentForm(): Response
+    public function showThankYouPage(): Response
     {
-        return $this->render('store/payment/payment_page.html.twig');
+        return $this->render('store/thank_you/thank_you_page.html.twig');
     }
 
     public function showUpdateForm(): Response
@@ -74,10 +88,12 @@ class StoreFrontController extends AbstractController
         ]);
     }
 
-    public function listByCategory(Request $request, SessionInterface $session): Response
+    public function listByCategory(Request $request): Response
     {
+        $email = $request->getSession()->get(Security::LAST_USERNAME, '');
+        $role = $this->userService->getUserByEmail($email)->getRole();
+
         $category = $request->get('category');
-        $userId = $session->get(AppConstants::USER_SESSION_NAME, AppConstants::UNAUTHORIZED_ID);
 
         if (!array_key_exists($category, AppConstants::EXISTING_CATEGORIES)) {
             return $this->redirectToRoute('error_store', [
@@ -90,7 +106,7 @@ class StoreFrontController extends AbstractController
         return $this->render(
             'store/order/list/list_page.html.twig',
             [
-                'userId' => $userId,
+                'role' => $role,
                 'category' => $category,
                 'orders' => $orders,
                 'categories' => AppConstants::EXISTING_CATEGORIES,
@@ -98,9 +114,11 @@ class StoreFrontController extends AbstractController
         );
     }
 
-    public function showOrder(int $orderId): Response
+    public function showOrder(Request $request, int $orderId): Response
     {
         try {
+            $email = $request->getSession()->get(Security::LAST_USERNAME, '');
+            $role = $this->userService->getUserByEmail($email)->getRole();
             $order = $this->orderService->find($orderId);
         } catch (\Exception $e) {
             return $this->redirectToRoute('error_store', [
@@ -109,19 +127,24 @@ class StoreFrontController extends AbstractController
             ]);
         }
 
-        return $this->render('store/order/view/view_page.html.twig', ['order' => $order]);
+        return $this->render('store/order/view/view_page.html.twig', [
+            'order' => $order, 
+            'role' => $role,
+            'categories' => AppConstants::EXISTING_CATEGORIES
+        ]);
     }
 
-    public function addToBasket(int $orderId, SessionInterface $session): Response
+    public function addToBasket(Request $request, int $orderId): Response
     {
         try {
-            $user = $this->userService->getUser($session->get(AppConstants::USER_SESSION_NAME, AppConstants::UNAUTHORIZED_ID));
+            $email = $request->getSession()->get(Security::LAST_USERNAME, '');
+
+            $user = $this->userService->getUserByEmail($email);
             $order = $this->orderService->find($orderId);
 
             $this->basketService->add($user, $order);
-
         } catch (\Exception $e) {
-            return $this->redirectToRoute('register_user_form');
+            return $this->redirectToRoute('login_user');
         }
 
         return $this->redirectToRoute('list_order', [
@@ -129,11 +152,14 @@ class StoreFrontController extends AbstractController
         ]);
     }
 
-    public function showBasket(SessionInterface $session): Response
+    public function showBasket(Request $request): Response
     {
         try {
-            $userId = $session->get(AppConstants::USER_SESSION_NAME, AppConstants::UNAUTHORIZED_ID);
-            $basketItems = $this->basketService->show($userId);
+            $email = $request->getSession()->get(Security::LAST_USERNAME, '');
+
+            $user = $this->userService->getUserByEmail($email);
+
+            $basketItems = $this->basketService->show($user->getId());
         } catch (\Exception $e) {
             return $this->redirectToRoute('register_user_form');
         }
@@ -143,10 +169,13 @@ class StoreFrontController extends AbstractController
         ]);
     }
 
-    public function increaseBasketItemCounter(int $orderId, SessionInterface $session): Response
+    public function increaseBasketItemCounter(Request $request, int $orderId): Response
     {
         try {
-            $user = $this->userService->getUser($session->get(AppConstants::USER_SESSION_NAME, AppConstants::UNAUTHORIZED_ID));
+            $email = $request->getSession()->get(Security::LAST_USERNAME, '');
+
+            $user = $this->userService->getUserByEmail($email);
+
             $order = $this->orderService->find($orderId);
 
             $this->basketService->increaseCount($user, $order);
@@ -160,10 +189,13 @@ class StoreFrontController extends AbstractController
         return $this->redirectToRoute('basket_order_form');
     }
 
-    public function decreaseBasketItemCounter(int $orderId, SessionInterface $session): Response
+    public function decreaseBasketItemCounter(Request $request, int $orderId): Response
     {
         try {
-            $user = $this->userService->getUser($session->get(AppConstants::USER_SESSION_NAME, AppConstants::UNAUTHORIZED_ID));
+            $email = $request->getSession()->get(Security::LAST_USERNAME, '');
+
+            $user = $this->userService->getUserByEmail($email);
+
             $order = $this->orderService->find($orderId);
 
             $this->basketService->decreaseCount($user, $order);
@@ -176,10 +208,10 @@ class StoreFrontController extends AbstractController
         return $this->redirectToRoute('basket_order_form');
     }
 
-    public function removeFromBasket(int $itemId, SessionInterface $session): Response
+    public function removeFromBasket(int $itemId): Response
     {
-        try {        
-        $this->basketService->remove($itemId);
+        try {
+            $this->basketService->remove($itemId);
         } catch (\Exception $e) {
             return $this->redirectToRoute('error_store', [
                 'errorTitle' => 'Failed to delete basket item',

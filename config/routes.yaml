@@ -53,16 +53,14 @@ update_user:
     requirements: 
         userId: '\d+'
 
-login_user_page:
-    path: /user/login
-    controller: App\Controller\UserController
-    methods: GET
-
 login_user:
-    path: /user/api/login/{?}
-    controller: App\Controller\UserController
-    methods: POST
-    requirements: 
+    path: /user/login
+    controller: App\Controller\SecurityController::login
+
+logout_user:
+    path: /user/logout
+    controller: App\Controller\SecurityController::logout
+
 #
 # STORE ROUTES
 #
@@ -116,14 +114,9 @@ remove_from_basket:
     requirements:
         orderId: '\d+'
 
-pay_for_order:
-    path: /store/payment
-    controller: App\Controller\StoreFrontController
-    methods: POST
-
-pay_for_order_form:
-    path: /store/api/payment
-    controller: App\Controller\StoreFrontController::showPaymentForm
+thank_you_page:
+    path: /store/thank_you
+    controller: App\Controller\StoreFrontController::showThankYouPage
     methods: GET
 #
 # ADMIN ROUTES

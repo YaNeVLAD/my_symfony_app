@@ -17,6 +17,9 @@
         <field name="email" column="email" type="string" length="255" nullable="false"/>
         <field name="phone" column="phone" type="string" length="255" nullable="true"/>
         <field name="avatarPath" column="avatar_path" type="string" length="255" nullable="true"/>
+        <field name="password" column="password" type="string" length="255" nullable="false"/>
+        <field name="role" column="role" type="integer" length="3" nullable="false"/>
+        
         <indexes>
             <index name="email_idx" columns="email"/>
             <index name="phone_idx" columns="phone"/>

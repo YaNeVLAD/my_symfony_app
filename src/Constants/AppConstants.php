@@ -14,8 +14,4 @@ class AppConstants
         'dessert' => 'Десерты',
     ];
 
-    //Test Authentification
-    public const USER_SESSION_NAME = 'userId';
-
-    public const UNAUTHORIZED_ID = 0;
 }

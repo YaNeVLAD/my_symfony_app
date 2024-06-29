@@ -74,6 +74,14 @@ class BasketService implements BasketServiceInterface
         $this->basketRepository->delete($basket);
     }
 
+    public function removeAllByUser(int $userId): void
+    {
+        $basket = $this->basketRepository->findAllByUserId($userId);
+        foreach ($basket as $item) {
+            $this->basketRepository->delete($item);
+        }
+    }
+
     public function removeAllByOrder(int $orderId): void
     {
         $basket = $this->basketRepository->findAllByOrderId($orderId);

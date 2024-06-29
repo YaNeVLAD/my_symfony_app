@@ -15,8 +15,10 @@ interface BasketServiceInterface
 
     public function remove(int $basketId): void;
 
-    public function removeAllByOrder(int $orderId): void;
+    public function removeAllByUser(int $userId): void;
 
+    public function removeAllByOrder(int $orderId): void;
+    
     public function increaseCount(UserData $userData, OrderData $orderData): void;
 
     public function decreaseCount(UserData $userData, OrderData $orderData): void;

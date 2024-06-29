@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -7,52 +8,75 @@ use App\Constants\AppConstants;
 use App\Service\Data\OrderData;
 use App\Service\OrderServiceInterface;
 use App\Service\BasketServiceInterface;
+use App\Service\UserServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Security;
 
 class OrderController extends AbstractController
 {
     //Переменные, константы и конструктор класса
     private const NOT_NULLABLE_FORM_FIELDS = ['categorie', 'name', 'price', 'featured'];
 
+    private $userService;
+
     private $orderService;
 
     private $basketService;
 
     public function __construct(
+        UserServiceInterface $userService,
         OrderServiceInterface $orderService,
         BasketServiceInterface $basketService,
     ) {
+        $this->userService = $userService;
         $this->orderService = $orderService;
         $this->basketService = $basketService;
     }
 
-    public function showCreateForm(string $currCategory): Response
-    {
-        return $this->render('store/order/create/create_page.html.twig', [
-            'currCategory' => $currCategory,
-            'categories' => AppConstants::EXISTING_CATEGORIES,
-        ]);
-    }
-
-    //Публичные методы
-    public function showUpdateForm(int $orderId): Response
+    public function showCreateForm(Request $request, string $currCategory): Response
     {
         try {
-            $order = $this->orderService->find($orderId);
+            $email = $request->getSession()->get(Security::LAST_USERNAME, '');
+
+            if ($this->userService->authorize(UserServiceInterface::ROLE, $email, null)) {
+                return $this->render('store/order/create/create_page.html.twig', [
+                    'currCategory' => $currCategory,
+                    'categories' => AppConstants::EXISTING_CATEGORIES,
+                ]);
+            }
+            throw new \Exception('Access Denied');
         } catch (\Exception $e) {
             return $this->redirectToRoute('error_store', [
                 'errorTitle' => 'Update Form Error',
                 'errorText' => $e->getMessage(),
             ]);
         }
+    }
 
-        return $this->render('store/order/update/update_page.html.twig', [
-            'order' => $order,
-            'currCategory' => $order->getCategorie(),
-            'categories' => AppConstants::EXISTING_CATEGORIES,
-        ]);
+    //Публичные методы
+    public function showUpdateForm(Request $request, int $orderId): Response
+    {
+        try {
+            $email = $request->getSession()->get(Security::LAST_USERNAME, '');
+
+            if ($this->userService->authorize(UserServiceInterface::ROLE, $email, null)) {
+                $order = $this->orderService->find($orderId);
+
+                return $this->render('store/order/update/update_page.html.twig', [
+                    'order' => $order,
+                    'currCategory' => $order->getCategorie(),
+                    'categories' => AppConstants::EXISTING_CATEGORIES,
+                ]);
+            }
+            throw new \Exception('Access Denied');
+        } catch (\Exception $e) {
+            return $this->redirectToRoute('error_store', [
+                'errorTitle' => 'Update Form Error',
+                'errorText' => $e->getMessage(),
+            ]);
+        }
     }
 
     public function createOrder(Request $request): Response
@@ -89,23 +113,27 @@ class OrderController extends AbstractController
         return $this->redirectToRoute('show_order', ['orderId' => $orderId]);
     }
 
-    public function deleteOrder(int $orderId): Response
+    public function deleteOrder(Request $request, int $orderId): Response
     {
         try {
-            $this->basketService->removeAllByOrder($orderId);
-            
-            $category = $this->orderService->delete($orderId);
-            if (!$category) {
-                return $this->redirectToRoute('list_order', ['category' => AppConstants::BASE_CATEGORY]);
+            $email = $request->getSession()->get(Security::LAST_USERNAME, '');
+
+            if ($this->userService->authorize(UserServiceInterface::ROLE, $email, null)) {
+                $this->basketService->removeAllByOrder($orderId);
+
+                $category = $this->orderService->delete($orderId);
+                if (!$category) {
+                    return $this->redirectToRoute('list_order', ['category' => AppConstants::BASE_CATEGORY]);
+                }
+                return $this->redirectToRoute('list_order', ['category' => $category]);
             }
+            throw new \Exception('Access Denied');
         } catch (\Exception $e) {
             return $this->redirectToRoute('error_store', [
                 'errorTitle' => 'Delete Error',
                 'errorText' => $e->getMessage(),
             ]);
         }
-
-        return $this->redirectToRoute('list_order', ['category' => $category]);
     }
 
     //Приватные методы

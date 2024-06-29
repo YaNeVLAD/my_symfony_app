@@ -52,7 +52,9 @@
                 {% include "store/order/list/list_item.html.twig" %}
             {% endif %} 
         {% endfor %}
-        {% include "store/order/list/list_add_item.html.twig" %}  
+        {% if role == roleAdmin %}
+            {% include "store/order/list/list_add_item.html.twig" %}  
+        {% endif %}
     </div>
 {% endblock %}
 

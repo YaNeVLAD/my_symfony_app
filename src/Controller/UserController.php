@@ -1,32 +1,44 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Constants\AppConstants;
+use App\Entity\UserRole;
 use App\Service\Data\UserData;
+use App\Service\UserService;
 use App\Service\UserServiceInterface;
+use App\Service\BasketServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Security;
 
 class UserController extends AbstractController
 {
     //Переменные, константы и конструктор класса
-    private const NOT_NULLABLE_FORM_FIELDS = ['first_name', 'last_name', 'gender', 'birth_date', 'email'];
+    private const NOT_NULLABLE_FORM_FIELDS = ['first_name', 'last_name', 'gender', 'birth_date', 'email', 'password'];
 
-    private UserServiceInterface $userService;
+    private $userService;
 
-    public function __construct(UserServiceInterface $userService)
+    private $basketService;
+
+    public function __construct(UserServiceInterface $userService, BasketServiceInterface $basketService)
     {
         $this->userService = $userService;
+        $this->basketService = $basketService;
     }
 
     //Публичные методы
-    public function showRegisterForm(SessionInterface $session): Response
+    public function showRegisterForm(Request $request): Response
     {
-        $session->set(AppConstants::USER_SESSION_NAME, AppConstants::UNAUTHORIZED_ID);
+        $email = $request->getSession()->get(Security::LAST_USERNAME, '');
+
+        if ($this->userService->authorize(UserServiceInterface::AUTHORIZATION, $email, null)) {
+            $user = $this->userService->getUserByEmail($email);
+
+            return $this->redirectToRoute('show_user', ['userId' => $user->getId()]);
+        }
 
         return $this->render('user/register/register_page.html.twig');
     }
@@ -39,63 +51,85 @@ class UserController extends AbstractController
         ]);
     }
 
-    public function viewUser(int $userId, SessionInterface $session): Response
+    public function viewUser(Request $request, int $userId): Response
     {
         try {
-            $userData = $this->userService->getUser($userId);
-            //Test Auth
-            $session->set(AppConstants::USER_SESSION_NAME, $userData->getId());
+            $email = $request->getSession()->get(Security::LAST_USERNAME, '');
 
+            if ($this->userService->authorize(UserServiceInterface::COMPARE, $email, $userId)) {
+                $requestedUser = $this->userService->getUser($userId);
+
+                return $this->render('user/view/view_page.html.twig', ['user' => $requestedUser]);
+            } else {
+                throw new \Exception('Access Denied');
+            }
         } catch (\Exception $e) {
             return $this->redirectToRoute('error_user', [
                 'errorTitle' => 'Failed To Show User',
                 'errorText' => $e->getMessage(),
             ]);
         }
-
-        return $this->render('user/view/view_page.html.twig', ['user' => $userData]);
     }
 
-    public function viewAllUsers(): Response
+    public function viewAllUsers(Request $request): Response
     {
         try {
-            $list = $this->userService->getAllUsers();
+            $email = $request->getSession()->get(Security::LAST_USERNAME, '');
+
+            if ($this->userService->authorize(UserServiceInterface::ROLE, $email, null)) {
+                $list = $this->userService->getAllUsers();
+
+                return $this->render('user/list/list_page.html.twig', ['users_list' => $list]);
+            } else {
+                throw new \Exception('Access Denied');
+            }
         } catch (\Exception $e) {
             return $this->redirectToRoute('error_user', [
                 'errorTitle' => 'Failed To Show Users List',
                 'errorText' => $e->getMessage(),
             ]);
         }
-
-        return $this->render('user/list/list_page.html.twig', ['users_list' => $list]);
     }
 
-    public function showUpdateForm(int $userId): Response
+    public function showUpdateForm(Request $request, int $userId): Response
     {
         try {
-            $userData = $this->userService->getUser($userId);
+            $email = $request->getSession()->get(Security::LAST_USERNAME, '');
+
+            if ($this->userService->authorize(UserServiceInterface::COMPARE, $email, $userId)) {
+                $requestedUser = $this->userService->getUser($userId);
+
+                return $this->render('user/update/update_page.html.twig', ['user' => $requestedUser]);;
+            } else {
+                throw new \Exception('Access Denied');
+            }
         } catch (\Exception $e) {
             return $this->redirectToRoute('error_user', [
                 'errorTitle' => 'Failed To Show Update Form',
                 'errorText' => $e->getMessage(),
             ]);
         }
-
-        return $this->render('user/update/update_page.html.twig', ['user' => $userData]);
     }
 
-    public function removeUser(int $userId): Response
+    public function removeUser(Request $request, int $userId): Response
     {
         try {
-            $this->userService->deleteUser($userId);
+            $email = $request->getSession()->get(Security::LAST_USERNAME, '');
+
+            if ($this->userService->authorize(UserServiceInterface::COMPARE, $email, $userId)) {
+                $this->basketService->removeAllByUser($userId);
+                $this->userService->deleteUser($userId);
+
+                return $this->redirectToRoute('index');
+            } else {
+                throw new \Exception('Access Denied');
+            }
         } catch (\Exception $e) {
             return $this->redirectToRoute('error_user', [
                 'errorTitle' => 'Failed To Delete User',
                 'errorText' => $e->getMessage(),
             ]);
         }
-
-        return $this->redirectToRoute('list_user', []);
     }
 
     public function registerUser(Request $request): Response
@@ -113,7 +147,7 @@ class UserController extends AbstractController
             ]);
         }
 
-        return $this->redirectToRoute('show_user', ['userId' => $userId]);
+        return $this->redirectToRoute('login_user');
     }
 
     public function updateUser(Request $request, int $userId): Response
@@ -147,6 +181,8 @@ class UserController extends AbstractController
             $this->validateData($request, 'email'),
             $this->validateData($request, 'phone'),
             null,
+            $this->validateData($request, 'password'),
+            UserRole::USER
         );
     }
 

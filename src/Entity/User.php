@@ -14,7 +14,9 @@ class User
         private \DateTimeImmutable $birthDate,
         private string $email,
         private ?string $phone,
-        private ?string $avatarPath
+        private ?string $avatarPath,
+        private string $password,
+        private int $role,
     ) {
 
     }
@@ -59,6 +61,16 @@ class User
     public function getAvatarPath(): ?string
     {
         return $this->avatarPath;
+    }
+
+    public function getRole(): int
+    {
+        return $this->role;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
     }
 
     //SET методы

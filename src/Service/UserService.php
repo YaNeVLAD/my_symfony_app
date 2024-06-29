@@ -3,33 +3,49 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+//passwordhasher (md5)
+//userProvider - ищет пользователей в бд по еmail
+//создаёт SecurityUser
+
 use App\Entity\User;
 use App\Entity\ListObject;
+use App\Entity\UserRole;
 use App\Service\Data\UserData;
+use App\Service\PasswordHasher;
 use App\Repository\UserRepositoryInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UserService implements UserServiceInterface
 {
     //Переменные, константы и конструктор класса
-    public const WRONG_EMAIL = "email";
+    public const COMPARE = 1;
 
-    public const WRONG_PHONE = "phone";
+    public const AUTHORIZATION = 2;
+
+    public const ROLE = 3;
+
+    private const WRONG_EMAIL = "email";
+
+    private const WRONG_PHONE = "phone";
 
     private const REGISTER_METHOD = 1;
 
     private const UPDATE_METHOD = 2;
 
-    private const OK_STATUS = 'ok';
-
     private const USER_IMAGES_DIR = 'user_images';
 
-    private UserRepositoryInterface $userRepository;
+    private $passwordHasher;
 
-    private ImageServiceInterface $imageService;
+    private $userRepository;
 
-    public function __construct(UserRepositoryInterface $userRepository, ImageServiceInterface $imageService)
+    private $imageService;
+
+    public function __construct(
+        UserRepositoryInterface $userRepository, 
+        ImageServiceInterface $imageService,
+        PasswordHasher $passwordHasher)
     {
+        $this->passwordHasher = $passwordHasher;
         $this->userRepository = $userRepository;
         $this->imageService = $imageService;
     }
@@ -137,6 +153,8 @@ class UserService implements UserServiceInterface
             $userData->getEmail(),
             $userData->getPhone(),
             $userData->getAvatarPath(),
+            $this->passwordHasher->hash($userData->getPassword()),             
+            $userData->getRole(),
         );
     }
 
@@ -152,6 +170,8 @@ class UserService implements UserServiceInterface
             $user->getEmail(),
             $user->getPhone(),
             $user->getAvatarPath(),
+            $user->getPassword(),
+            $user->getRole(),
         );
     }
 
@@ -185,6 +205,35 @@ class UserService implements UserServiceInterface
             }
         }
         return null;
+    }
+
+    public function authorize(int $method, ?string $email, ?int $userId): ?bool
+    {
+        switch ($method) {
+            case self::COMPARE:
+                $requestedUser = $this->getUser($userId);
+                $user = $this->getUserByEmail($email);
+                if ($email === $requestedUser->getEmail() || $user->getRole() === UserRole::ADMIN) {
+                    return true;
+                }
+                return false;
+            case self::AUTHORIZATION:
+                if ($email) {
+                    return true;
+                }
+                return false;
+            case self::ROLE:
+                if ($email) {
+                    $userRole = $this->getUserByEmail($email)->getRole();
+                    if ($userRole === UserRole::ADMIN) {
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            default:
+                throw new \Exception('Wrong usage of method authorize');
+        }
     }
 
     private function isEmailUnique(string $email, ?string $newEmail): bool
