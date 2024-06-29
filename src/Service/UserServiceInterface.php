@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\User;
 use App\Service\Data\UserData;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 

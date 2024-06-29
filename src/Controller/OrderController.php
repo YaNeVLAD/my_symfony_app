@@ -10,9 +10,9 @@ use App\Service\OrderServiceInterface;
 use App\Service\BasketServiceInterface;
 use App\Service\UserServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Security;
 
 class OrderController extends AbstractController
 {

@@ -8,8 +8,8 @@ namespace App\Service;
 //создаёт SecurityUser
 
 use App\Entity\User;
-use App\Entity\ListObject;
 use App\Entity\UserRole;
+use App\Entity\ListObject;
 use App\Service\Data\UserData;
 use App\Service\PasswordHasher;
 use App\Repository\UserRepositoryInterface;

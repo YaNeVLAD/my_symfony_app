@@ -7,12 +7,22 @@
     <div>
         {% for key, name in categories %}
 			{% if order.getCategorie == key %}
-                <span class="view-form__span">Категория: {{name}}</span>
+                <div>
+                    <span class="user__field-value">Категория: {{name}}</span>
+                </div>
 			{% endif %}
 		{% endfor %}
-        <span class="view-form__span">Название: {{order.getName}}</span>
-        <span class="view-form__span">Состав: {{order.getDescription}}</span>
-        <span class="view-form__span">Цена: {{order.getPrice}} ₽</span>
-        <span class="view-form__span">Акция: {{order.getFeatured}}</span>
+        <div class="user__field-block">
+            <span class="user__field-value">Название: {{order.getName}}</span>
+        </div>
+        <div class="user__field-block">
+            <span class="user__field-value">Состав: {{order.getDescription}}</span>
+        </div>
+        <div class="user__field-block">
+            <span class="user__field-value">Цена: {{order.getPrice}} ₽</span>
+        </div>
+        <div class="user__field-block">
+            <span class="user__field-value">Акция: {{order.getFeatured}}</span>
+        </div>
     </div>
 </div>

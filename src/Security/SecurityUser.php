@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace App\Security;
 
 use App\Entity\UserRole;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 class SecurityUser implements UserInterface, PasswordAuthenticatedUserInterface
 {

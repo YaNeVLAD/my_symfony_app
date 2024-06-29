@@ -4,9 +4,8 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Entity\Order;
-use App\Repository\OrderRepositoryInterface;
 use App\Service\Data\OrderData;
-use App\Repository\OrderRepository;
+use App\Repository\OrderRepositoryInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class OrderService implements OrderServiceInterface

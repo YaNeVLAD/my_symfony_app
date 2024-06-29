@@ -6,13 +6,12 @@ namespace App\Controller;
 
 use App\Entity\UserRole;
 use App\Service\Data\UserData;
-use App\Service\UserService;
 use App\Service\UserServiceInterface;
 use App\Service\BasketServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class UserController extends AbstractController
 {

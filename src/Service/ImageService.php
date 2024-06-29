@@ -1,10 +1,6 @@
 <?php
 declare(strict_types=1);
 
-//Переделать логику: если аватар не загружен, то ничего не сохраняем
-//На фронте если аватар есть - отображать его
-//Если аватара нет, отображать стандартный
-
 namespace App\Service;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;

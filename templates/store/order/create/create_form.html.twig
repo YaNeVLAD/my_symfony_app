@@ -1,32 +1,36 @@
 <form action="{{path('create_order')}}" method="post" enctype="multipart/form-data">
-	<label for="categorie">Category:</label>
+	<div class="user__field-block">
+		<label for="categorie">Категория:</label>
+		<select id="categorie" name="categorie" required>
+			{% for key, name in categories %}
+				{% if currCategory == key %}
+					<option value="{{key}}" selected class="user__field-value">{{name}}</option>
+				{% else %}
+					<option value="{{key}}" class="user__field-value">{{name}}</option>
+				{% endif %}
+			{% endfor %}
+		</select>
+	</div>
 
-	<select id="categorie" name="categorie" required>
-		{% for key, category in categories %}
-			{% if currCategory == key %}
-				<option value="{{key}}" selected>{{category}}</option>
-			{% else %}
-				<option value="{{key}}">{{category}}</option>
-			{% endif %}
-		{% endfor %}
-	</select>
-	<br>
+	<div class="user__field-block">
+		<label for="name" class="user__field-title">Имя:</label>
+		<input type="text" id="name" name="name" required class="user__field-value">
+	</div>
 
-	<label for="name">Name:</label>
-	<input type="text" id="name" name="name" required>
-	<br>
+	<div class="user__field-block">
+		<label for="description" class="user__field-title">Описание:</label>
+		<textarea id="description" name="description" class="user__field-value"></textarea>
+	</div>
 
-	<label for="description">Description:</label>
-	<textarea id="description" name="description"></textarea>
-	<br>
+	<div class="user__field-block">
+		<label for="image_path">Изображение:</label>
+		<input type="file" id="image_path" name="image_path" accept=".png, .jpg, .jpeg, .gif">
+	</div>
 
-	<label for="image_path">Image Path:</label>
-	<input type="file" id="image_path" name="image_path" accept=".png, .jpg, .jpeg, .gif">
-	<br>
-
-	<label for="price">Price:</label>
-	<input type="number" id="price" name="price" required>
-	<br>
+	<div class="user__field-block">
+		<label for="price" class="user__field-title">Цена:</label>
+		<input type="number" id="price" name="price" required class="user__field-value">
+	</div>
 
 	<label>Featured:</label>
 	<input type="radio" id="featured_yes" name="featured" value="1" required>

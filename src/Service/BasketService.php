@@ -6,7 +6,6 @@ namespace App\Service;
 use App\Entity\Basket;
 use App\Service\Data\UserData;
 use App\Service\Data\OrderData;
-use App\Service\Data\BasketData;
 use App\Repository\UserRepositoryInterface;
 use App\Repository\OrderRepositoryInterface;
 use App\Repository\BasketRepositoryInterface;
@@ -115,7 +114,7 @@ class BasketService implements BasketServiceInterface
 
     private function findBasketItem(?UserData $userData, ?OrderData $orderData): ?Basket
     {
-        if (!$userData || !$orderData) {
+        if ($userData === null || $orderData === null) {
             throw new \Exception('Failed to find user or order with this ID\'s');
         }
 

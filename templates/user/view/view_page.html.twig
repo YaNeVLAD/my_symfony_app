@@ -1,5 +1,13 @@
 {% extends "base/index.html.twig" %}
 
+{% block header %}
+	{% embed "base/header.html.twig" %}
+		{% block location %}
+			Профиль / Личный кабинет
+		{% endblock %}
+	{% endembed %}
+{% endblock %}
+
 {% block title %}
 	User Profile
 {% endblock %}

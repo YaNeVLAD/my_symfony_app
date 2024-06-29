@@ -2,44 +2,16 @@
 
 declare(strict_types=1);
 
-//СУЩНОСТЬ Order изменить на сущность Product???
-//Создать новую сущность Order
-//У неё будет primary key order_id
-//внешний ключ user_id от User
-//внешний ключ product_id от Product
-//поле order_adress varchar(255) not null
-//поле order_date datetime (DateTimeImmutable)
-//При нажатии кнопки оплатить со страницы basket
-//Происходит поиск всех заказов по текущему id пользователя
-//Создание сущностей Order(null, User $user, Order $order, string $adress, DateTimeImmutable date())
-//Сделать возможность смотреть и удалять эти заказы с отдельных страничек
-
-//Авторизация
-//Разделить права пользователя и админа
-//Настроить security.yaml
-//Сделать так, что пользователь может удалить только сам себя
-//Админ может удалять всех
-//Только админ может просматривать список пользователей
-//Только админ видит и может перейти на страницы CRUD для товаров
-//Проверка прав на смену аватарки
-
-//Настроить маппинг для сущностей
-//Отформатировать sql запросы в миграциях
-//Каждая миграция совершает 1 действие
-/** */
-
-
 namespace App\Controller;
 
 use App\Constants\AppConstants;
-use App\Service\Data\BasketData;
 use App\Service\UserServiceInterface;
 use App\Service\OrderServiceInterface;
 use App\Service\BasketServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Security\Core\Security;
 
 class StoreFrontController extends AbstractController
 {
@@ -68,8 +40,11 @@ class StoreFrontController extends AbstractController
         ]);
     }
 
-    public function showThankYouPage(): Response
+    public function showThankYouPage(Request $request): Response
     {
+        $email = $request->getSession()->get(Security::LAST_USERNAME, '');
+        $this->basketService->removeAllByUser($this->userService->getUserByEmail($email)->getId());
+
         return $this->render('store/thank_you/thank_you_page.html.twig');
     }
 

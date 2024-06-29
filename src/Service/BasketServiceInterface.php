@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Service;
 
-use App\Entity\Basket;
 use App\Service\Data\UserData;
 use App\Service\Data\OrderData;
 
