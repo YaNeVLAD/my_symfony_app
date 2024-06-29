@@ -70,7 +70,7 @@ error_store:
     methods: GET
 
 show_product: 
-    path: /store/order/{productId}
+    path: /store/product/{productId}
     controller: App\Controller\StoreFrontController::showProduct
     methods: GET
     requirements: 
@@ -122,31 +122,31 @@ thank_you_page:
 # ADMIN ROUTES
 #
 delete_product:
-    path: /store/order/api/delete/{productId}
+    path: /store/product/api/delete/{productId}
     controller: App\Controller\ProductController::deleteProduct
     methods: GET
     requirements: 
         productId: '\d+'
 
 create_product_form:
-    path: /store/order/create/{currCategory}
+    path: /store/product/create/{currCategory}
     controller: App\Controller\ProductController::showCreateForm
     methods: GET
 
 create_product:
-    path: /store/order/api/create
+    path: /store/product/api/create
     controller: App\Controller\ProductController::createProduct
     methods: POST
 
 update_product_form:
-    path: /store/order/update/{productId}
+    path: /store/product/update/{productId}
     controller: App\Controller\ProductController::showUpdateForm
     methods: GET
     requirements: 
         productId: '\d+'
 
 update_product:
-    path: /store/order/api/update/{productId}
+    path: /store/product/api/update/{productId}
     controller: App\Controller\ProductController::updateProduct
     methods: POST 
     requirements: 

@@ -33,12 +33,12 @@
                 <div class="slider-wrapper">
                     {% for product in products %}   
                         {% if product.getFeatured != 0 %}
-                            {% include "store/order/list/list_featured_item.html.twig" %}
+                            {% include "store/product/list/list_featured_item.html.twig" %}
                             {% set count = count + 1 %}
                         {% endif %} 
                     {% endfor %}
                     {% if count == 0 %}
-                        {% include "store/order/list/list_missing_item.html.twig" %}  
+                        {% include "store/product/list/list_missing_item.html.twig" %}  
                     {% endif %}
                 </div>
             </div>
@@ -49,11 +49,11 @@
     <div class="product-list">
         {% for product in products %}   
             {% if product.getFeatured == 0 %}
-                {% include "store/order/list/list_item.html.twig" %}
+                {% include "store/product/list/list_item.html.twig" %}
             {% endif %} 
         {% endfor %}
         {% if role == roleAdmin %}
-            {% include "store/order/list/list_add_item.html.twig" %}  
+            {% include "store/product/list/list_add_item.html.twig" %}  
         {% endif %}
     </div>
 {% endblock %}

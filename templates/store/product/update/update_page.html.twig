@@ -9,8 +9,8 @@
 {% endblock %}
 
 {% block content %}
-    {% include "store/order/update/update_form.html.twig" with {categories: categories} %}
+    {% include "store/product/update/update_form.html.twig" with {categories: categories} %}
     <nav class="nav">
-        <a class="nav__link" href="{{path('show_product', {productId: order.getId})}}">Назад</a>
+        <a class="nav__link" href="{{path('show_product', {productId: product.getId})}}">Назад</a>
     </nav>        
 {% endblock %}

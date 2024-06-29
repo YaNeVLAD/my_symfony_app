@@ -34,14 +34,15 @@ class ProductController extends AbstractController
         $this->productService = $productService;
         $this->basketService = $basketService;
     }
-
+   
+    //Публичные методы
     public function showCreateForm(Request $request, string $currCategory): Response
     {
         try {
             $email = $request->getSession()->get(Security::LAST_USERNAME, '');
 
             if ($this->userService->authorize(UserServiceInterface::ROLE, $email, null)) {
-                return $this->render('store/order/create/create_page.html.twig', [
+                return $this->render('store/product/create/create_page.html.twig', [
                     'currCategory' => $currCategory,
                     'categories' => AppConstants::EXISTING_CATEGORIES,
                 ]);
@@ -55,7 +56,6 @@ class ProductController extends AbstractController
         }
     }
 
-    //Публичные методы
     public function showUpdateForm(Request $request, int $productId): Response
     {
         try {
@@ -64,8 +64,8 @@ class ProductController extends AbstractController
             if ($this->userService->authorize(UserServiceInterface::ROLE, $email, null)) {
                 $product = $this->productService->find($productId);
 
-                return $this->render('store/order/update/update_page.html.twig', [
-                    'order' => $product,
+                return $this->render('store/product/update/update_page.html.twig', [
+                    'product' => $product,
                     'currCategory' => $product->getCategorie(),
                     'categories' => AppConstants::EXISTING_CATEGORIES,
                 ]);

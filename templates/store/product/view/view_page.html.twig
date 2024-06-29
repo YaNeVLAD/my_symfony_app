@@ -1,0 +1,20 @@
+{% extends "base/index.html.twig" %}
+
+{% block header %}
+    {% embed "base/header.html.twig" %}
+        {% block location %}
+            Магазин / Заказ
+        {% endblock %}
+    {% endembed %}
+{% endblock %}
+
+{% block content %}
+    {% include "store/product/view/view_form.html.twig" %}
+    <nav class="nav">
+        {% if role == roleAdmin %}
+            <a class="nav__link" href="{{path('update_product_form', {productId: product.getId})}}">Обновить информацию</a>
+            <a class="nav__link" href="{{path('delete_product', {productId: product.getId})}}">Удалить заказ</a>
+        {% endif %}
+        <a class="nav__link" href="{{path('list_product', {category: product.getCategorie})}}">Вернуться к товарам</a>
+    </nav>
+{% endblock %}

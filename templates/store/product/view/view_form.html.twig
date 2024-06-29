@@ -1,0 +1,28 @@
+<div class="view-form">
+    {% if product.getImagePath == null %}
+        <img class="product__image" src="/uploads/product_images/base_image.png">
+    {% else %}
+        <img class="product__image" src="/uploads/product_images/{{product.getImagePath}}">
+    {% endif %}
+    <div>
+        {% for key, name in categories %}
+			{% if product.getCategorie == key %}
+                <div>
+                    <span class="user__field-value">Категория: {{name}}</span>
+                </div>
+			{% endif %}
+		{% endfor %}
+        <div class="user__field-block">
+            <span class="user__field-value">Название: {{product.getName}}</span>
+        </div>
+        <div class="user__field-block">
+            <span class="user__field-value">Состав: {{product.getDescription}}</span>
+        </div>
+        <div class="user__field-block">
+            <span class="user__field-value">Цена: {{product.getPrice}} ₽</span>
+        </div>
+        <div class="user__field-block">
+            <span class="user__field-value">Акция: {{product.getFeatured}}</span>
+        </div>
+    </div>
+</div>

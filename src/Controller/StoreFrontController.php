@@ -54,7 +54,7 @@ class StoreFrontController extends AbstractController
 
     public function showUpdateForm(): Response
     {
-        return $this->render('store/order/update/update_page.html.twig', [
+        return $this->render('store/product/update/update_page.html.twig', [
             'categories' => AppConstants::EXISTING_CATEGORIES,
         ]);
     }
@@ -83,7 +83,7 @@ class StoreFrontController extends AbstractController
         $products = $this->productService->findAllInCategory($category);
 
         return $this->render(
-            'store/order/list/list_page.html.twig',
+            'store/product/list/list_page.html.twig',
             [
                 'role' => $role,
                 'category' => $category,
@@ -106,8 +106,8 @@ class StoreFrontController extends AbstractController
             ]);
         }
 
-        return $this->render('store/order/view/view_page.html.twig', [
-            'order' => $product, 
+        return $this->render('store/product/view/view_page.html.twig', [
+            'product' => $product, 
             'role' => $role,
             'categories' => AppConstants::EXISTING_CATEGORIES
         ]);
