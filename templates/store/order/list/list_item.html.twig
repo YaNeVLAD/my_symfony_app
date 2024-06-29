@@ -1,14 +1,14 @@
-<div class="order">
-    <a href="{{path('show_order', {orderId: order.getId})}}">
-        {% if order.getImagePath == null %}
-            <img class="order__image" src="/uploads/order_images/base_image.png">
+<div class="product">
+    <a href="{{path('show_product', {productId: product.getId})}}">
+        {% if product.getImagePath == null %}
+            <img class="product__image" src="/uploads/product_images/base_image.png">
         {% else %}
-            <img class="order__image" src="/uploads/order_images/{{order.getImagePath}}">
+            <img class="product__image" src="/uploads/product_images/{{product.getImagePath}}">
         {% endif %}
     </a>
-        <div class="order__text">
-            <span class="order__name">{{order.getName}}</span>
-            <span class="order__price">{{order.getPrice}} ₽</span>
+        <div class="product__text">
+            <span class="product__name">{{product.getName}}</span>
+            <span class="product__price">{{product.getPrice}} ₽</span>
         </div>
-    <a href="{{path('add_order_to_basket', {orderId: order.getId})}}" class="order__make">Заказать</a>
+    <a href="{{path('add_product_to_basket', {productId: product.getId})}}" class="product__make">Заказать</a>
 </div>

@@ -51,13 +51,13 @@ class BasketRepository implements BasketRepositoryInterface
         return $this->repository->findBy(["user" => $id]);
     }
 
-    public function findAllByOrderId(int $id): ?array
+    public function findAllByProductId(int $id): ?array
     {
-        return $this->repository->findBy(["order" => $id]);
+        return $this->repository->findBy(["product" => $id]);
     }
 
-    public function findByUserAndOrder(int $userId, int $orderId): ?Basket
+    public function findByUserAndProduct(int $userId, int $productId): ?Basket
     {
-        return $this->repository->findOneBy(["order" => $orderId, "user" => $userId]);
+        return $this->repository->findOneBy(["product" => $productId, "user" => $userId]);
     }
 }

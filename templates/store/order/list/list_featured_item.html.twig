@@ -1,15 +1,15 @@
-<div class="slider-item featured-order">
-    <span class="featured-order__title">Акция</span>
-    <a href="{{path('show_order', {orderId: order.getId})}}">
-        {% if order.getImagePath == null %}
-            <img class="order__image" src="/uploads/order_images/base_image.png">
+<div class="slider-item featured-product">
+    <span class="featured-product__title">Акция</span>
+    <a href="{{path('show_product', {productId: product.getId})}}">
+        {% if product.getImagePath == null %}
+            <img class="product__image" src="/uploads/product_images/base_image.png">
         {% else %}
-            <img class="order__image" src="/uploads/order_images/{{order.getImagePath}}">
+            <img class="product__image" src="/uploads/product_images/{{product.getImagePath}}">
         {% endif %}
     </a>
-    <div class="featured-order__text">
-        <span class="featured-order__name">{{order.getName}}</span>
-        <span class="featured-order__price">{{order.getPrice}} ₽</span>
+    <div class="featured-product__text">
+        <span class="featured-product__name">{{product.getName}}</span>
+        <span class="featured-product__price">{{product.getPrice}} ₽</span>
     </div>
-    <a href="{{path('add_order_to_basket', {orderId: order.getId})}}" class="featured-order__make">Заказать</a>
+    <a href="{{path('add_product_to_basket', {productId: product.getId})}}" class="featured-product__make">Заказать</a>
 </div>

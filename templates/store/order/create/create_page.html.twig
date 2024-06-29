@@ -11,6 +11,6 @@
 {% block content %}
 	{% include "store/order/create/create_form.html.twig" with {'categories': categories} %}
 	<nav class="nav">
-		<a class="nav__link" href="{{path('list_order', {category: currCategory})}}">Назад</a>
+		<a class="nav__link" href="{{path('list_product', {category: currCategory})}}">Назад</a>
 	</nav>
 {% endblock %}

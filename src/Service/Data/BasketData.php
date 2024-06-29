@@ -8,7 +8,7 @@ class BasketData
     public function __construct(
         private ?int $basket_id,
         private UserData $user,
-        private OrderData $order,
+        private ProductData $product,
     ) {
 
     }
@@ -24,8 +24,8 @@ class BasketData
         return $this->user;
     }
 
-    public function getOrder(): OrderData
+    public function getProduct(): ProductData
     {
-        return $this->order;
+        return $this->product;
     }
 }

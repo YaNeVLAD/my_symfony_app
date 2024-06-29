@@ -6,7 +6,7 @@ class Basket
     public function __construct(
         private ?int $basket_id,
         private User $user,
-        private Order $order,
+        private Product $product,
         private int $itemCount,
     ) {
 
@@ -23,9 +23,9 @@ class Basket
         return $this->user;
     }
 
-    public function getOrder(): Order
+    public function getProduct(): Product
     {
-        return $this->order;
+        return $this->product;
     }
 
     public function getItemCount(): int
@@ -39,9 +39,9 @@ class Basket
         $this->user = $user;
     }
 
-    public function setOrder(Order $order): void
+    public function setProduct(Product $product): void
     {
-        $this->order = $order;
+        $this->product = $product;
     }
 
     public function setItemCount(int $itemCount): void

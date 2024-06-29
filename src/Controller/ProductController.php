@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Constants\AppConstants;
-use App\Service\Data\OrderData;
-use App\Service\OrderServiceInterface;
+use App\Service\Data\ProductData;
+use App\Service\ProductServiceInterface;
 use App\Service\BasketServiceInterface;
 use App\Service\UserServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,24 +14,24 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class OrderController extends AbstractController
+class ProductController extends AbstractController
 {
     //Переменные, константы и конструктор класса
     private const NOT_NULLABLE_FORM_FIELDS = ['categorie', 'name', 'price', 'featured'];
 
     private $userService;
 
-    private $orderService;
+    private $productService;
 
     private $basketService;
 
     public function __construct(
         UserServiceInterface $userService,
-        OrderServiceInterface $orderService,
+        ProductServiceInterface $productService,
         BasketServiceInterface $basketService,
     ) {
         $this->userService = $userService;
-        $this->orderService = $orderService;
+        $this->productService = $productService;
         $this->basketService = $basketService;
     }
 
@@ -56,17 +56,17 @@ class OrderController extends AbstractController
     }
 
     //Публичные методы
-    public function showUpdateForm(Request $request, int $orderId): Response
+    public function showUpdateForm(Request $request, int $productId): Response
     {
         try {
             $email = $request->getSession()->get(Security::LAST_USERNAME, '');
 
             if ($this->userService->authorize(UserServiceInterface::ROLE, $email, null)) {
-                $order = $this->orderService->find($orderId);
+                $product = $this->productService->find($productId);
 
                 return $this->render('store/order/update/update_page.html.twig', [
-                    'order' => $order,
-                    'currCategory' => $order->getCategorie(),
+                    'order' => $product,
+                    'currCategory' => $product->getCategorie(),
                     'categories' => AppConstants::EXISTING_CATEGORIES,
                 ]);
             }
@@ -79,13 +79,13 @@ class OrderController extends AbstractController
         }
     }
 
-    public function createOrder(Request $request): Response
+    public function createProduct(Request $request): Response
     {
         try {
             $image = $request->files->get('image_path');
-            $orderData = $this->createFromRequest($request);
+            $productData = $this->createFromRequest($request);
 
-            $orderId = $this->orderService->create($orderData, $image);
+            $productId = $this->productService->create($productData, $image);
         } catch (\Exception $e) {
             return $this->redirectToRoute('error_store', [
                 'errorTitle' => 'Registration Error',
@@ -93,16 +93,16 @@ class OrderController extends AbstractController
             ]);
         }
 
-        return $this->redirectToRoute('show_order', ['orderId' => $orderId]);
+        return $this->redirectToRoute('show_product', ['productId' => $productId]);
     }
 
-    public function updateOrder(Request $request): Response
+    public function updateProduct(Request $request): Response
     {
         try {
             $image = $request->files->get('image_path');
-            $orderData = $this->createFromRequest($request);
+            $productData = $this->createFromRequest($request);
 
-            $orderId = $this->orderService->update($orderData, $image);
+            $productId = $this->productService->update($productData, $image);
         } catch (\Exception $e) {
             return $this->redirectToRoute('error_store', [
                 'errorTitle' => 'Update Error',
@@ -110,22 +110,22 @@ class OrderController extends AbstractController
             ]);
         }
 
-        return $this->redirectToRoute('show_order', ['orderId' => $orderId]);
+        return $this->redirectToRoute('show_product', ['productId' => $productId]);
     }
 
-    public function deleteOrder(Request $request, int $orderId): Response
+    public function deleteProduct(Request $request, int $productId): Response
     {
         try {
             $email = $request->getSession()->get(Security::LAST_USERNAME, '');
 
             if ($this->userService->authorize(UserServiceInterface::ROLE, $email, null)) {
-                $this->basketService->removeAllByOrder($orderId);
+                $this->basketService->removeAllByProduct($productId);
 
-                $category = $this->orderService->delete($orderId);
+                $category = $this->productService->delete($productId);
                 if (!$category) {
-                    return $this->redirectToRoute('list_order', ['category' => AppConstants::BASE_CATEGORY]);
+                    return $this->redirectToRoute('list_product', ['category' => AppConstants::BASE_CATEGORY]);
                 }
-                return $this->redirectToRoute('list_order', ['category' => $category]);
+                return $this->redirectToRoute('list_product', ['category' => $category]);
             }
             throw new \Exception('Access Denied');
         } catch (\Exception $e) {
@@ -137,10 +137,10 @@ class OrderController extends AbstractController
     }
 
     //Приватные методы
-    private function createFromRequest(Request $request): OrderData
+    private function createFromRequest(Request $request): ProductData
     {
-        return new OrderData(
-            (int) $request->get('orderId'),
+        return new ProductData(
+            (int) $request->get('productId'),
             $this->validateCategory($request->get('categorie')),
             $this->validateData($request, 'name'),
             $this->validateData($request, 'description'),
@@ -162,7 +162,7 @@ class OrderController extends AbstractController
         $formFieldValue = $request->get($formFieldName);
 
         if (in_array($formFieldName, self::NOT_NULLABLE_FORM_FIELDS) and $formFieldValue === '') {
-            throw new \Exception('Missing Order`s ' . $formFieldName);
+            throw new \Exception('Missing Product`s ' . $formFieldName);
         } elseif ($formFieldValue === '') {
             return null;
         }

@@ -20,7 +20,7 @@
            <ul class="store-nav__list">
                 {% for key, name in categories %}
                     <li class="store-nav__item  {% if category == key %}selected{% endif %}">
-                        <a href="{{ path('list_order', {category: key})}}" class="store-nav__link">
+                        <a href="{{ path('list_product', {category: key})}}" class="store-nav__link">
                             {{name}}
                         </a>
                     </li>
@@ -31,8 +31,8 @@
             <button class="prev-btn"></button>
             <div class="slider-container">
                 <div class="slider-wrapper">
-                    {% for order in orders %}   
-                        {% if order.getFeatured != 0 %}
+                    {% for product in products %}   
+                        {% if product.getFeatured != 0 %}
                             {% include "store/order/list/list_featured_item.html.twig" %}
                             {% set count = count + 1 %}
                         {% endif %} 
@@ -46,9 +46,9 @@
         </div>
     </div>
     
-    <div class="order-list">
-        {% for order in orders %}   
-            {% if order.getFeatured == 0 %}
+    <div class="product-list">
+        {% for product in products %}   
+            {% if product.getFeatured == 0 %}
                 {% include "store/order/list/list_item.html.twig" %}
             {% endif %} 
         {% endfor %}

@@ -5,7 +5,7 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
      <entity name="App\Entity\User" table="user">
-        <id name="userId" type="integer" column="user_id" options="{'unsigned': true}">
+        <id name="userId" type="integer" column="user_id">
             <generator strategy="IDENTITY"/> 
         </id>
     

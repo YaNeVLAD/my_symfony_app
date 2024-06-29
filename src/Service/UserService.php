@@ -140,6 +140,35 @@ class UserService implements UserServiceInterface
         return $userId;
     }
 
+    public function authorize(int $method, ?string $email, ?int $userId): ?bool
+    {
+        switch ($method) {
+            case self::COMPARE:
+                $requestedUser = $this->getUser($userId);
+                $user = $this->getUserByEmail($email);
+                if ($email === $requestedUser->getEmail() || $user->getRole() === UserRole::ADMIN) {
+                    return true;
+                }
+                return false;
+            case self::AUTHORIZATION:
+                if ($email) {
+                    return true;
+                }
+                return false;
+            case self::ROLE:
+                if ($email) {
+                    $userRole = $this->getUserByEmail($email)->getRole();
+                    if ($userRole === UserRole::ADMIN) {
+                        return true;
+                    }
+                    return false;
+                }
+                return false;
+            default:
+                throw new \Exception('Wrong usage of method authorize');
+        }
+    }
+
     //Приватные методы
     private function createFromData(UserData $userData): User
     {
@@ -205,35 +234,6 @@ class UserService implements UserServiceInterface
             }
         }
         return null;
-    }
-
-    public function authorize(int $method, ?string $email, ?int $userId): ?bool
-    {
-        switch ($method) {
-            case self::COMPARE:
-                $requestedUser = $this->getUser($userId);
-                $user = $this->getUserByEmail($email);
-                if ($email === $requestedUser->getEmail() || $user->getRole() === UserRole::ADMIN) {
-                    return true;
-                }
-                return false;
-            case self::AUTHORIZATION:
-                if ($email) {
-                    return true;
-                }
-                return false;
-            case self::ROLE:
-                if ($email) {
-                    $userRole = $this->getUserByEmail($email)->getRole();
-                    if ($userRole === UserRole::ADMIN) {
-                        return true;
-                    }
-                    return false;
-                }
-                return false;
-            default:
-                throw new \Exception('Wrong usage of method authorize');
-        }
     }
 
     private function isEmailUnique(string $email, ?string $newEmail): bool

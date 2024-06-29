@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-class Order
+class Product
 {
     public function __construct(
-        private ?int $orderId,
-        private string $categorie,
+        private ?int $productId,
+        private string $category,
         private string $name,
         private ?string $description,
         private ?string $imagePath,
@@ -20,12 +20,12 @@ class Order
     //GET методы
     public function getId(): ?int
     {
-        return $this->orderId;
+        return $this->productId;
     }
 
     public function getCategorie(): string
     {
-        return $this->categorie;
+        return $this->category;
     }
 
     public function getName(): string
@@ -53,9 +53,9 @@ class Order
 	}
 
     //SET методы
-    public function setCategorie(string $categorie): void
+    public function setCategorie(string $category): void
     {
-        $this->categorie = $categorie;
+        $this->category = $category;
     }
 
     public function setName(string $name): void

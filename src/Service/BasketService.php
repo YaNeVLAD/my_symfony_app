@@ -5,9 +5,9 @@ namespace App\Service;
 
 use App\Entity\Basket;
 use App\Service\Data\UserData;
-use App\Service\Data\OrderData;
+use App\Service\Data\ProductData;
 use App\Repository\UserRepositoryInterface;
-use App\Repository\OrderRepositoryInterface;
+use App\Repository\ProductRepositoryInterface;
 use App\Repository\BasketRepositoryInterface;
 
 class BasketService implements BasketServiceInterface
@@ -15,36 +15,36 @@ class BasketService implements BasketServiceInterface
     //Переменные, константы и конструктор класса
     private $userRepository;
 
-    private $orderRepository;
+    private $productRepository;
 
     private $basketRepository;
 
     public function __construct(
         UserRepositoryInterface $userRepository,
-        OrderRepositoryInterface $orderRepository,
+        ProductRepositoryInterface $productRepository,
         BasketRepositoryInterface $basketRepository
     ) {
         $this->userRepository = $userRepository;
-        $this->orderRepository = $orderRepository;
+        $this->productRepository = $productRepository;
         $this->basketRepository = $basketRepository;
     }
 
     //Публичные методы
-    public function add(?UserData $userData, ?OrderData $orderData): ?int
+    public function add(?UserData $userData, ?ProductData $productData): ?int
     {
-        $basket = $this->findBasketItem($userData, $orderData);
+        $basket = $this->findBasketItem($userData, $productData);
 
         if ($basket) {
-            $this->increaseCount($userData, $orderData);
+            $this->increaseCount($userData, $productData);
             return null;
         } else {
             $user = $this->userRepository->findById($userData->getId());
-            $order = $this->orderRepository->findById($orderData->getId());
+            $product = $this->productRepository->findById($productData->getId());
 
             $basket = new Basket(
                 null,
                 $user,
-                $order,
+                $product,
                 1
             );
 
@@ -67,7 +67,7 @@ class BasketService implements BasketServiceInterface
     {
         $basket = $this->basketRepository->findById($basketId);
         if (!$basket) {
-            throw new \Exception('Order with this ID doesn\'t exist for this user ID');
+            throw new \Exception('Product with this ID doesn\'t exist for this user ID');
         }
 
         $this->basketRepository->delete($basket);
@@ -81,17 +81,17 @@ class BasketService implements BasketServiceInterface
         }
     }
 
-    public function removeAllByOrder(int $orderId): void
+    public function removeAllByProduct(int $productId): void
     {
-        $basket = $this->basketRepository->findAllByOrderId($orderId);
+        $basket = $this->basketRepository->findAllByProductId($productId);
         foreach ($basket as $item) {
             $this->basketRepository->delete($item);
         }
     }
 
-    public function increaseCount(?UserData $userData, ?OrderData $orderData): void
+    public function increaseCount(?UserData $userData, ?ProductData $productData): void
     {
-        $basket = $this->findBasketItem($userData, $orderData);
+        $basket = $this->findBasketItem($userData, $productData);
 
         $count = $basket->getItemCount();
         $basket->setItemCount($count + 1);
@@ -99,9 +99,9 @@ class BasketService implements BasketServiceInterface
         $this->basketRepository->store($basket);
     }
 
-    public function decreaseCount(?UserData $userData, ?OrderData $orderData): void
+    public function decreaseCount(?UserData $userData, ?ProductData $productData): void
     {
-        $basket = $this->findBasketItem($userData, $orderData);
+        $basket = $this->findBasketItem($userData, $productData);
 
         if ($basket->getItemCount() <= 1) {
             $this->remove($basket->getId());
@@ -112,19 +112,19 @@ class BasketService implements BasketServiceInterface
         }
     }
 
-    private function findBasketItem(?UserData $userData, ?OrderData $orderData): ?Basket
+    private function findBasketItem(?UserData $userData, ?ProductData $productData): ?Basket
     {
-        if ($userData === null || $orderData === null) {
+        if ($userData === null || $productData === null) {
             throw new \Exception('Failed to find user or order with this ID\'s');
         }
 
         $user = $this->userRepository->findById($userData->getId());
-        $order = $this->orderRepository->findById($orderData->getId());
+        $product = $this->productRepository->findById($productData->getId());
 
-        if (!$user || !$order) {
+        if (!$user || !$product) {
             throw new \Exception('Failed to find order or user with received data');
         }
 
-        return $this->basketRepository->findByUserAndOrder($user->getId(), $order->getId());
+        return $this->basketRepository->findByUserAndProduct($user->getId(), $product->getId());
     }
 }

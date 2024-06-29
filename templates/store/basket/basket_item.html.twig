@@ -3,37 +3,37 @@
 		<div class="cart-item__block first">
 			<div class="cart-item__header">Товар</div>
 			<div class="cart-item__content cart-item__product">
-				<a href="{{path('show_order', {orderId: basketItem.order.getId})}}">
-					{% if basketItem.order.getImagePath == null %}
-						<img class="cart-item__image" src="/uploads/order_images/base_image.png">
+				<a href="{{path('show_product', {productId: basketItem.product.getId})}}">
+					{% if basketItem.product.getImagePath == null %}
+						<img class="cart-item__image" src="/uploads/product_images/base_image.png">
 					{% else %}
-						<img class="cart-item__image" src="/uploads/order_images/{{basketItem.order.getImagePath}}">
+						<img class="cart-item__image" src="/uploads/product_images/{{basketItem.product.getImagePath}}">
 					{% endif %}
 				</a>	
 				<div class="cart-item__description">
-					<div class="cart-item__name">{{basketItem.order.getName}}</div>
+					<div class="cart-item__name">{{basketItem.product.getName}}</div>
 				</div>
 			</div>
 		</div>
 		<div class="cart-item__block">
 			<div class="cart-item__header">Цена</div>
-			<div class="cart-item__content cart-item__price">{{basketItem.order.getPrice}} ₽</div>
+			<div class="cart-item__content cart-item__price">{{basketItem.product.getPrice}} ₽</div>
 		</div>
 		<div class="cart-item__block">
 			<div class="cart-item__header">Количество</div>
 			<div class="cart-item__content cart-item__quantity">
-				<form class="cart-item__quantity-form" action="{{path('decrease_basket_count', {orderId: basketItem.order.getId})}}">
+				<form class="cart-item__quantity-form" action="{{path('decrease_basket_count', {productId: basketItem.product.getId})}}">
 					<button type="submit" class="cart-item__button">-</button>
 				</form>
 				<input type="text" id="counter" class="cart-item__input" value="{{basketItem.getItemCount}}" readonly>
-				<form class="cart-item__quantity-form" action="{{path('increase_basket_count', {orderId: basketItem.order.getId})}}">
+				<form class="cart-item__quantity-form" action="{{path('increase_basket_count', {productId: basketItem.product.getId})}}">
 					<button type="submit" class="cart-item__button">+</button>
 				</form>
 			</div>
 		</div>
 		<div class="cart-item__block">
 			<div class="cart-item__header">Подытог</div>
-			<div class="cart-item__content cart-item__subtotal">{{basketItem.order.getPrice * basketItem.getItemCount}} ₽</div>
+			<div class="cart-item__content cart-item__subtotal">{{basketItem.product.getPrice * basketItem.getItemCount}} ₽</div>
 		</div>
 		<div class="cart-item__block last">
 			<div class="cart-item__header"></div>

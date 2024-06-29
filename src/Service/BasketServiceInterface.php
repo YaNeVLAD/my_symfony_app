@@ -4,11 +4,11 @@ declare(strict_types=1);
 namespace App\Service;
 
 use App\Service\Data\UserData;
-use App\Service\Data\OrderData;
+use App\Service\Data\ProductData;
 
 interface BasketServiceInterface
 {
-    public function add(UserData $userData, OrderData $orderData): ?int;
+    public function add(UserData $userData, ProductData $productData): ?int;
 
     public function show(int $userId): ?array;
 
@@ -16,9 +16,9 @@ interface BasketServiceInterface
 
     public function removeAllByUser(int $userId): void;
 
-    public function removeAllByOrder(int $orderId): void;
+    public function removeAllByProduct(int $productId): void;
     
-    public function increaseCount(UserData $userData, OrderData $orderData): void;
+    public function increaseCount(UserData $userData, ProductData $productData): void;
 
-    public function decreaseCount(UserData $userData, OrderData $orderData): void;
+    public function decreaseCount(UserData $userData, ProductData $productData): void;
 }

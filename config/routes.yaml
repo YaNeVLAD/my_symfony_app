@@ -69,50 +69,50 @@ error_store:
     controller: App\Controller\StoreFrontController::errorPage
     methods: GET
 
-show_order: 
-    path: /store/order/{orderId}
-    controller: App\Controller\StoreFrontController::showOrder
+show_product: 
+    path: /store/order/{productId}
+    controller: App\Controller\StoreFrontController::showProduct
     methods: GET
     requirements: 
-        orderId: '\d+' 
+        productId: '\d+' 
 
-list_order:
+list_product:
     path: /store/list/{category}
     controller: App\Controller\StoreFrontController::listByCategory
     methods: GET
 
-basket_order_form:
+basket_product_form:
     path: /store/basket
     controller: App\Controller\StoreFrontController::showBasket
     methods: GET
 
-add_order_to_basket:
-    path: /store/basket/api/add/{orderId}
+add_product_to_basket:
+    path: /store/basket/api/add/{productId}
     controller: App\Controller\StoreFrontController::addToBasket
     methods: GET
     requirements: 
-        orderId: '\d+'
+        productId: '\d+'
 
 increase_basket_count:
-    path: /store/basket/api/increase/{orderId}
+    path: /store/basket/api/increase/{productId}
     controller: App\Controller\StoreFrontController::increaseBasketItemCounter
     methods: GET
     requirements: 
-        orderId: '\d+'
+        productId: '\d+'
 
 decrease_basket_count:
-    path: /store/basket/api/decrease/{orderId}
+    path: /store/basket/api/decrease/{productId}
     controller: App\Controller\StoreFrontController::decreaseBasketItemCounter
     methods: GET
     requirements: 
-        orderId: '\d+'
+        productId: '\d+'
 
 remove_from_basket:
     path: /store/basket/api/remove/{itemId}
     controller: App\Controller\StoreFrontController::removeFromBasket
     methods: GET
     requirements:
-        orderId: '\d+'
+        productId: '\d+'
 
 thank_you_page:
     path: /store/thank_you
@@ -121,33 +121,33 @@ thank_you_page:
 #
 # ADMIN ROUTES
 #
-delete_order:
-    path: /store/order/api/delete/{orderId}
-    controller: App\Controller\OrderController::deleteOrder
+delete_product:
+    path: /store/order/api/delete/{productId}
+    controller: App\Controller\ProductController::deleteProduct
     methods: GET
     requirements: 
-        orderId: '\d+'
+        productId: '\d+'
 
-create_order_form:
+create_product_form:
     path: /store/order/create/{currCategory}
-    controller: App\Controller\OrderController::showCreateForm
+    controller: App\Controller\ProductController::showCreateForm
     methods: GET
 
-create_order:
+create_product:
     path: /store/order/api/create
-    controller: App\Controller\OrderController::createOrder
+    controller: App\Controller\ProductController::createProduct
     methods: POST
 
-update_order_form:
-    path: /store/order/update/{orderId}
-    controller: App\Controller\OrderController::showUpdateForm
+update_product_form:
+    path: /store/order/update/{productId}
+    controller: App\Controller\ProductController::showUpdateForm
     methods: GET
     requirements: 
-        orderId: '\d+'
+        productId: '\d+'
 
-update_order:
-    path: /store/order/api/update/{orderId}
-    controller: App\Controller\OrderController::updateOrder
+update_product:
+    path: /store/order/api/update/{productId}
+    controller: App\Controller\ProductController::updateProduct
     methods: POST 
     requirements: 
-        orderId: '\d+'
+        productId: '\d+'

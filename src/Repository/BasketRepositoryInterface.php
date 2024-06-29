@@ -17,7 +17,7 @@ interface BasketRepositoryInterface
 
     public function findAllByUserId(int $id): ?array;
 
-    public function findAllByOrderId(int $id): ?array;
+    public function findAllByProductId(int $id): ?array;
 
-    public function findByUserAndOrder(int $userId, int $orderId): ?Basket;
+    public function findByUserAndProduct(int $userId, int $productId): ?Basket;
 }

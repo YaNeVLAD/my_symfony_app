@@ -1,12 +1,16 @@
 <?php
 
+//Доделать, если не в падлу
+//А именно вёрстку )))
+//И активные заказы
+
 declare(strict_types=1);
 
 namespace App\Controller;
 
 use App\Constants\AppConstants;
 use App\Service\UserServiceInterface;
-use App\Service\OrderServiceInterface;
+use App\Service\ProductServiceInterface;
 use App\Service\BasketServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -18,24 +22,24 @@ class StoreFrontController extends AbstractController
     //Переменные, константы и конструктор класса
     private $userService;
 
-    private $orderService;
+    private $productService;
 
     private $basketService;
 
     public function __construct(
         UserServiceInterface $userService,
-        OrderServiceInterface $orderService,
+        ProductServiceInterface $productService,
         BasketServiceInterface $basketService
     ) {
         $this->userService = $userService;
-        $this->orderService = $orderService;
+        $this->productService = $productService;
         $this->basketService = $basketService;
     }
 
     //Публичные методы
     public function index(): Response
     {
-        return $this->redirectToRoute('list_order', [
+        return $this->redirectToRoute('list_product', [
             'category' => AppConstants::BASE_CATEGORY,
         ]);
     }
@@ -76,54 +80,54 @@ class StoreFrontController extends AbstractController
                 'errorText' => 'This category doesn\'t exist',
             ]);
         }
-        $orders = $this->orderService->findAllInCategory($category);
+        $products = $this->productService->findAllInCategory($category);
 
         return $this->render(
             'store/order/list/list_page.html.twig',
             [
                 'role' => $role,
                 'category' => $category,
-                'orders' => $orders,
+                'products' => $products,
                 'categories' => AppConstants::EXISTING_CATEGORIES,
             ]
         );
     }
 
-    public function showOrder(Request $request, int $orderId): Response
+    public function showProduct(Request $request, int $productId): Response
     {
         try {
             $email = $request->getSession()->get(Security::LAST_USERNAME, '');
             $role = $this->userService->getUserByEmail($email)->getRole();
-            $order = $this->orderService->find($orderId);
+            $product = $this->productService->find($productId);
         } catch (\Exception $e) {
             return $this->redirectToRoute('error_store', [
-                'errorTitle' => 'Show Order Error',
+                'errorTitle' => 'Show Product Error',
                 'errorText' => $e->getMessage(),
             ]);
         }
 
         return $this->render('store/order/view/view_page.html.twig', [
-            'order' => $order, 
+            'order' => $product, 
             'role' => $role,
             'categories' => AppConstants::EXISTING_CATEGORIES
         ]);
     }
 
-    public function addToBasket(Request $request, int $orderId): Response
+    public function addToBasket(Request $request, int $productId): Response
     {
         try {
             $email = $request->getSession()->get(Security::LAST_USERNAME, '');
 
             $user = $this->userService->getUserByEmail($email);
-            $order = $this->orderService->find($orderId);
+            $product = $this->productService->find($productId);
 
-            $this->basketService->add($user, $order);
+            $this->basketService->add($user, $product);
         } catch (\Exception $e) {
             return $this->redirectToRoute('login_user');
         }
 
-        return $this->redirectToRoute('list_order', [
-            'category' => $order->getCategorie()
+        return $this->redirectToRoute('list_product', [
+            'category' => $product->getCategorie()
         ]);
     }
 
@@ -144,16 +148,16 @@ class StoreFrontController extends AbstractController
         ]);
     }
 
-    public function increaseBasketItemCounter(Request $request, int $orderId): Response
+    public function increaseBasketItemCounter(Request $request, int $productId): Response
     {
         try {
             $email = $request->getSession()->get(Security::LAST_USERNAME, '');
 
             $user = $this->userService->getUserByEmail($email);
 
-            $order = $this->orderService->find($orderId);
+            $product = $this->productService->find($productId);
 
-            $this->basketService->increaseCount($user, $order);
+            $this->basketService->increaseCount($user, $product);
         } catch (\Exception $e) {
             return $this->redirectToRoute('error_store', [
                 'errorTitle' => 'Increase Basket Counter Error',
@@ -161,26 +165,26 @@ class StoreFrontController extends AbstractController
             ]);
         }
 
-        return $this->redirectToRoute('basket_order_form');
+        return $this->redirectToRoute('basket_product_form');
     }
 
-    public function decreaseBasketItemCounter(Request $request, int $orderId): Response
+    public function decreaseBasketItemCounter(Request $request, int $productId): Response
     {
         try {
             $email = $request->getSession()->get(Security::LAST_USERNAME, '');
 
             $user = $this->userService->getUserByEmail($email);
 
-            $order = $this->orderService->find($orderId);
+            $product = $this->productService->find($productId);
 
-            $this->basketService->decreaseCount($user, $order);
+            $this->basketService->decreaseCount($user, $product);
         } catch (\Exception $e) {
             return $this->redirectToRoute('error_store', [
                 'errorTitle' => 'Decrease Basket Counter Error',
                 'errorText' => $e->getMessage(),
             ]);
         }
-        return $this->redirectToRoute('basket_order_form');
+        return $this->redirectToRoute('basket_product_form');
     }
 
     public function removeFromBasket(int $itemId): Response
@@ -193,6 +197,6 @@ class StoreFrontController extends AbstractController
                 'errorText' => $e->getMessage(),
             ]);
         }
-        return $this->redirectToRoute('basket_order_form');
+        return $this->redirectToRoute('basket_product_form');
     }
 }

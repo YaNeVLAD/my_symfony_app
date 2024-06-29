@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
-use App\Entity\Order;
+use App\Entity\Product;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\OrderRepositoryInterface;
+use App\Repository\ProductRepositoryInterface;
 
-class OrderRepository implements OrderRepositoryInterface
+class ProductRepository implements ProductRepositoryInterface
 {
     //Переменные, константы и конструктор класса
     private EntityManagerInterface $em;
@@ -18,21 +18,21 @@ class OrderRepository implements OrderRepositoryInterface
     public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->repository = $em->getRepository(Order::class);
+        $this->repository = $em->getRepository(Product::class);
     }
 
     //Публичные методы
-    public function store(Order $order): ?int
+    public function store(Product $product): ?int
     {
-        $this->em->persist($order);
+        $this->em->persist($product);
         $this->em->flush();
 
-        return $order->getId();
+        return $product->getId();
     }
 
-    public function delete(Order $order): void
+    public function delete(Product $product): void
     {
-        $this->em->remove($order);
+        $this->em->remove($product);
         $this->em->flush();
     }
 
@@ -41,18 +41,18 @@ class OrderRepository implements OrderRepositoryInterface
         return $this->repository->findAll();
     }
 
-    public function findById(int $id): ?Order
+    public function findById(int $id): ?Product
     {
-        return $this->em->find(Order::class, $id);
+        return $this->em->find(Product::class, $id);
     }
 
-    public function findByName(string $name): ?Order
+    public function findByName(string $name): ?Product
     {
         return $this->repository->findOneBy(["name" => (string) $name]);
     }
 
-    public function findByCategorie(string $category): ?Order
+    public function findByCategorie(string $category): ?Product
     {
-        return $this->repository->findOneBy(["categorie" => (string) $category]);
+        return $this->repository->findOneBy(["category" => (string) $category]);
     }
 }

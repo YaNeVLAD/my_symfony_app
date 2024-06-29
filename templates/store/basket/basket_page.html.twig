@@ -32,8 +32,8 @@
 			</div>
 			{% for basketItem in basketItems %}
 				{% include "store/basket/basket_item.html.twig" %}
-                {% set Sum = Sum + basketItem.order.getPrice %}
-				{% set OverAllSum = OverAllSum + basketItem.order.getPrice * basketItem.getItemCount %}
+                {% set Sum = Sum + basketItem.product.getPrice %}
+				{% set OverAllSum = OverAllSum + basketItem.product.getPrice * basketItem.getItemCount %}
 			{% endfor %}
 		</div>
         <div class="payment-block">

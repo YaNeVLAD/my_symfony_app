@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace App\Service\Data;
 
-class OrderData
+class ProductData
 {
     public function __construct(
-        private ?int $orderId,
+        private ?int $productId,
         private string $categorie,
         private string $name,
         private ?string $description,
@@ -20,7 +20,7 @@ class OrderData
     //GET методы
     public function getId(): ?int
     {
-        return $this->orderId;
+        return $this->productId;
     }
 
     public function getCategorie(): string

@@ -477,13 +477,13 @@ body {
     border: 3px solid rgb(36, 36, 36);
 }
 
-.featured-order {
+.featured-product {
     display: inline-block;
     box-sizing: border-box;
     min-width: 100%;
 }
 
-.featured-order__title {
+.featured-product__title {
     display: block;
     text-align: center;
     font: 400 28px/30px "Lora", serif;
@@ -493,18 +493,18 @@ body {
     overflow-y: hidden;
 }
 
-.featured-order__image {
+.featured-product__image {
     height: 200px;
     width: calc(100% - 1px);
     border: 1px solid rgb(36, 36, 36);
 }
 
-.featured-order__text {
+.featured-product__text {
     background-color: rgb(255, 255, 255);
     border: 1px solid rgb(36, 36, 36);
 }
 
-.featured-order__name {
+.featured-product__name {
     display: inline-block;
     width: 100%;
     text-align: center;
@@ -512,7 +512,7 @@ body {
     font: 700 30px/30px "Oxygen", sans-serif;
 }
 
-.featured-order__price {
+.featured-product__price {
     display: inline-block;
     width: 100%;
     text-align: center;
@@ -520,7 +520,7 @@ body {
     font: 700 24px/30px "Oxygen", sans-serif;
 }
 
-.featured-order__make {
+.featured-product__make {
     display: inline-block;
     width: calc(100% - 1px);
     border: 1px solid rgb(36, 36, 36);
@@ -532,30 +532,30 @@ body {
     text-decoration: none;
 }
 
-.order {
+.product {
     width: 270px;
     margin: 45px 30px;
 }
 
-.order-list {
+.product-list {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     margin-bottom: 200px;
 }
 
-.order__image {
+.product__image {
     height: 254px;
     width: calc(100% - 1px);
     border: 1px solid rgb(36, 36, 36);
 }
 
-.order__text {
+.product__text {
     background-color: rgb(255, 255, 255);
     border: 1px solid rgb(36, 36, 36);
 }
 
-.order__name {
+.product__name {
     display: inline-block;
     width: 100%;
     height: fit-content;
@@ -564,7 +564,7 @@ body {
     font: 700 24px/30px "Oxygen", sans-serif;
 }
 
-.order__price {
+.product__price {
     display: inline-block;
     width: 100%;
     text-align: center;
@@ -572,7 +572,7 @@ body {
     font: 700 24px/30px "Oxygen", sans-serif;
 }
 
-.order__make {
+.product__make {
     display: inline-block;
     width: calc(100% - 1px);
     border: 1px solid rgb(36, 36, 36);
@@ -584,25 +584,25 @@ body {
     text-decoration: none;
 }
 
-.add-order {
+.add-product {
     width: 270px;
     overflow: hidden;
     margin: 45px 30px;
 }
 
-.add-order__image {
+.add-product__image {
     height: 254px;
     width: calc(100% - 1px);
     border: 1px solid rgb(36, 36, 36);
 }
 
-.add-order__text {
+.add-product__text {
     background-color: rgb(255, 255, 255);
     border: 1px solid rgb(36, 36, 36);
     height: 60px;
 }
 
-.add-order__make {
+.add-product__make {
     display: inline-block;
     width: calc(100% - 1px);
     border: 1px solid rgb(36, 36, 36);
